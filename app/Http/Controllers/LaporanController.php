@@ -2,41 +2,43 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Laporan;
 use Illuminate\Http\Request;
+use App\Models\Laporan;
 
 class LaporanController extends Controller
 {
     public function index()
     {
-        return Laporan::all();
+        return response()->json(Laporan::all());
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'judul' => 'required|string|max:255',
-            'deskripsi' => 'required|string',
-            'tanggal' => 'required|date',
+            'periode' => 'required|string',
+            'jumlah_pasien' => 'required|integer',
+            'pendapatan' => 'required|numeric'
         ]);
 
-        return Laporan::create($request->all());
+        $laporan = Laporan::create($request->all());
+        return response()->json($laporan, 201);
     }
 
-    public function show(Laporan $laporan)
+    public function show($id)
     {
-        return $laporan;
+        return response()->json(Laporan::findOrFail($id));
     }
 
-    public function update(Request $request, Laporan $laporan)
+    public function update(Request $request, $id)
     {
+        $laporan = Laporan::findOrFail($id);
         $laporan->update($request->all());
-        return $laporan;
+        return response()->json($laporan);
     }
 
-    public function destroy(Laporan $laporan)
+    public function destroy($id)
     {
-        $laporan->delete();
-        return response()->json(['message' => 'Laporan berhasil dihapus']);
+        Laporan::destroy($id);
+        return response()->json(null, 204);
     }
 }

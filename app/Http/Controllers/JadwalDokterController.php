@@ -2,42 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\JadwalDokter;
 use Illuminate\Http\Request;
+use App\Models\JadwalDokter;
 
 class JadwalDokterController extends Controller
 {
     public function index()
     {
-        return JadwalDokter::all();
+        $jadwal = JadwalDokter::with('dokter')->get();
+        return response()->json($jadwal);
+    }
+
+    public function show($id)
+    {
+        $jadwal = JadwalDokter::with('dokter')->find($id);
+        if (!$jadwal) {
+            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
+        }
+        return response()->json($jadwal);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'dokter_id' => 'required|exists:dokter,id',
-            'hari' => 'required|string',
-            'jam_mulai' => 'required|date_format:H:i:s',
-            'jam_selesai' => 'required|date_format:H:i:s',
+            'dokter_id' => 'required|exists:dokter,dokter_id',
+            'hari' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'jam_mulai' => 'required|date_format:H:i',
+            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
         ]);
 
-        return JadwalDokter::create($request->all());
+        $jadwal = JadwalDokter::create($request->all());
+
+        return response()->json($jadwal, 201);
     }
 
-    public function show(JadwalDokter $jadwalDokter)
+    public function update(Request $request, $id)
     {
-        return $jadwalDokter;
+        $jadwal = JadwalDokter::find($id);
+        if (!$jadwal) {
+            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
+        }
+
+        $request->validate([
+            'dokter_id' => 'sometimes|required|exists:dokter,dokter_id',
+            'hari' => 'sometimes|required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'jam_mulai' => 'sometimes|required|date_format:H:i',
+            'jam_selesai' => 'sometimes|required|date_format:H:i|after:jam_mulai',
+        ]);
+
+        $jadwal->update($request->all());
+
+        return response()->json($jadwal);
     }
 
-    public function update(Request $request, JadwalDokter $jadwalDokter)
+    public function destroy($id)
     {
-        $jadwalDokter->update($request->all());
-        return $jadwalDokter;
-    }
+        $jadwal = JadwalDokter::find($id);
+        if (!$jadwal) {
+            return response()->json(['message' => 'Jadwal tidak ditemukan'], 404);
+        }
 
-    public function destroy(JadwalDokter $jadwalDokter)
-    {
-        $jadwalDokter->delete();
-        return response()->json(['message' => 'Jadwal dokter berhasil dihapus']);
+        $jadwal->delete();
+
+        return response()->json(['message' => 'Jadwal berhasil dihapus']);
     }
 }

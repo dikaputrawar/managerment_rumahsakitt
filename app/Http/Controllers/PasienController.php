@@ -2,43 +2,68 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Pasien;
 use Illuminate\Http\Request;
+use App\Models\Pasien;
 
 class PasienController extends Controller
 {
     public function index()
     {
-        return Pasien::all();
+        $pasien = Pasien::all();
+        return response()->json($pasien);
+    }
+
+    public function show($id)
+    {
+        $pasien = Pasien::find($id);
+        if (!$pasien) {
+            return response()->json(['message' => 'Pasien tidak ditemukan'], 404);
+        }
+        return response()->json($pasien);
     }
 
     public function store(Request $request)
     {
         $request->validate([
-            'nama' => 'required|string|max:255',
+            'nama' => 'required|string|max:100',
             'tanggal_lahir' => 'required|date',
             'jenis_kelamin' => 'required|in:Laki-laki,Perempuan',
             'alamat' => 'required|string',
-            'no_telepon' => 'required|string|max:15',
         ]);
 
-        return Pasien::create($request->all());
+        $pasien = Pasien::create($request->all());
+
+        return response()->json($pasien, 201);
     }
 
-    public function show(Pasien $pasien)
+    public function update(Request $request, $id)
     {
-        return $pasien;
-    }
+        $pasien = Pasien::find($id);
+        if (!$pasien) {
+            return response()->json(['message' => 'Pasien tidak ditemukan'], 404);
+        }
 
-    public function update(Request $request, Pasien $pasien)
-    {
+        $request->validate([
+            'nama' => 'sometimes|required|string|max:100',
+            'tanggal_lahir' => 'sometimes|required|date',
+            'jenis_kelamin' => 'sometimes|required|in:Laki-laki,Perempuan',
+            'alamat' => 'sometimes|required|string',
+        ]);
+
         $pasien->update($request->all());
-        return $pasien;
+
+        return response()->json($pasien);
     }
 
-    public function destroy(Pasien $pasien)
+    public function destroy($id)
     {
+        $pasien = Pasien::find($id);
+        if (!$pasien) {
+            return response()->json(['message' => 'Pasien tidak ditemukan'], 404);
+        }
+
         $pasien->delete();
+
         return response()->json(['message' => 'Pasien berhasil dihapus']);
     }
 }

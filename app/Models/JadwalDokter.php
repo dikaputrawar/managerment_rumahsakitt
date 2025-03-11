@@ -9,17 +9,19 @@ class JadwalDokter extends Model
 {
     use HasFactory;
 
-    protected $table = 'jadwal_dokter';
+    protected $table = 'jadwal_dokter'; 
+
+    protected $primaryKey = 'jadwal_id'; 
 
     protected $fillable = [
         'dokter_id',
         'hari',
         'jam_mulai',
-        'jam_selesai',
+        'jam_selesai'
     ];
 
     public function dokter()
     {
-        return $this->belongsTo(Dokter::class);
+        return $this->belongsTo(Dokter::class, 'dokter_id');
     }
 }

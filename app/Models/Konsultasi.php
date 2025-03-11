@@ -9,23 +9,31 @@ class Konsultasi extends Model
 {
     use HasFactory;
 
-    protected $table = 'konsultasi';
+    protected $table = 'konsultasi'; 
+
+    protected $primaryKey = 'konsultasi_id'; 
 
     protected $fillable = [
         'pasien_id',
+        'dokter_id',
         'jadwal_id',
-        'keluhan',
-        'diagnosa',
-        'resep_obat',
+        'tanggal_konsultasi',
+        'status'
     ];
 
     public function pasien()
     {
-        return $this->belongsTo(Pasien::class);
+        return $this->belongsTo(Pasien::class, 'pasien_id');
+    }
+
+
+    public function dokter()
+    {
+        return $this->belongsTo(Dokter::class, 'dokter_id');
     }
 
     public function jadwal()
     {
-        return $this->belongsTo(JadwalDokter::class);
+        return $this->belongsTo(JadwalDokter::class, 'jadwal_id');
     }
 }

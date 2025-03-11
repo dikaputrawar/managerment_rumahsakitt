@@ -9,17 +9,21 @@ class RekamMedis extends Model
 {
     use HasFactory;
 
-    protected $table = 'rekam_medis';
+    protected $table = 'rekam_medis'; 
+
+    protected $primaryKey = 'rekam_id';
 
     protected $fillable = [
         'pasien_id',
-        'riwayat_penyakit',
-        'pengobatan_sebelumnya',
-        'alergi',
+        'tanggal_kunjungan',
+        'diagnosis',
+        'tindakan',
+        'obat'
     ];
+
 
     public function pasien()
     {
-        return $this->belongsTo(Pasien::class);
+        return $this->belongsTo(Pasien::class, 'pasien_id');
     }
 }

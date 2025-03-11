@@ -9,11 +9,13 @@ class Laporan extends Model
 {
     use HasFactory;
 
-    protected $table = 'laporan';
+    protected $table = 'laporan'; 
+
+    protected $primaryKey = 'laporan_id'; 
 
     protected $fillable = [
-        'judul',
-        'deskripsi',
-        'tanggal',
+        'periode',
+        'jumlah_pasien',
+        'pendapatan'
     ];
 }

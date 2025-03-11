@@ -7,12 +7,15 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('jadwal_dokter', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('dokter_id')->constrained('dokter')->onDelete('cascade');
-            $table->string('hari');
+            $table->id('jadwal_id'); 
+            $table->unsignedBigInteger('dokter_id'); 
+            $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']);
             $table->time('jam_mulai');
             $table->time('jam_selesai');
             $table->timestamps();
+
+            // Foreign key constraint
+            $table->foreign('dokter_id')->references('dokter_id')->on('dokter')->onDelete('cascade');
         });
     }
 

@@ -7,11 +7,11 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('dokter', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->string('spesialisasi');
-            $table->string('no_telepon');
-            $table->string('email')->unique();
+            $table->id('dokter_id'); // Primary key dengan auto-increment
+            $table->string('nama', 100);
+            $table->string('spesialisasi', 100);
+            $table->string('no_telepon', 20);
+            $table->string('email', 100)->unique();
             $table->timestamps();
         });
     }

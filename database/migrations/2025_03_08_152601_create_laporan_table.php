@@ -7,10 +7,10 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('laporan', function (Blueprint $table) {
-            $table->id();
-            $table->foreignId('dokter_id')->constrained('dokter')->onDelete('cascade');
-            $table->foreignId('pasien_id')->constrained('pasien')->onDelete('cascade');
-            $table->text('laporan_kesehatan');
+            $table->id('laporan_id');
+            $table->string('periode');
+            $table->integer('jumlah_pasien');
+            $table->decimal('pendapatan', 15, 2);
             $table->timestamps();
         });
     }

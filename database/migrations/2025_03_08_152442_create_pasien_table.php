@@ -6,13 +6,14 @@ use Illuminate\Support\Facades\Schema;
 
 return new class extends Migration {
     public function up() {
-        Schema::create('pasien', function (Blueprint $table) {
-            $table->id();
-            $table->string('nama');
-            $table->integer('umur');
-            $table->string('alamat');
-            $table->string('no_telepon');
-            $table->timestamps();
+               // Tabel Pasien
+               Schema::create('pasien', function (Blueprint $table) {
+                $table->id('pasien_id');
+                $table->string('nama', 100);
+                $table->date('tanggal_lahir');
+                $table->enum('jenis_kelamin', ['Laki-laki', 'Perempuan']);
+                $table->text('alamat');
+                $table->timestamps();
         });
     }
 
