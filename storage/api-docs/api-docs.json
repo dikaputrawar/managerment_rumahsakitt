@@ -1,0 +1,893 @@
+{
+    "openapi": "3.0.0",
+    "info": {
+        "title": "Dokumentasi API Rumah Sakit",
+        "description": "API ini digunakan untuk mengelola data pasien, dokter, konsultasi, dan lainnya.",
+        "version": "1.0.0"
+    },
+    "servers": [
+        {
+            "url": "http://my-default-host.com",
+            "description": "Server API Lokal"
+        },
+        {
+            "url": "/api"
+        }
+    ],
+    "paths": {
+        "/api/dokter": {
+            "get": {
+                "tags": [
+                    "Dokter"
+                ],
+                "summary": "Menampilkan semua dokter",
+                "operationId": "7470afc3ecdc948c80b78d87c9b7a397",
+                "responses": {
+                    "200": {
+                        "description": "Daftar dokter berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Dokter"
+                ],
+                "summary": "Menambahkan dokter baru",
+                "operationId": "86845a036fc0a852519e70cf6e32bd86",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama",
+                                    "spesialisasi",
+                                    "no_telepon",
+                                    "email"
+                                ],
+                                "properties": {
+                                    "nama": {
+                                        "type": "string"
+                                    },
+                                    "spesialisasi": {
+                                        "type": "string"
+                                    },
+                                    "no_telepon": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Dokter berhasil ditambahkan"
+                    }
+                }
+            }
+        },
+        "/api/dokter/{id}": {
+            "get": {
+                "tags": [
+                    "Dokter"
+                ],
+                "summary": "Menampilkan detail dokter",
+                "operationId": "9ae2099d069d0f5a9725591fc710c8bb",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data dokter berhasil diambil"
+                    },
+                    "404": {
+                        "description": "Dokter tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Dokter"
+                ],
+                "summary": "Memperbarui data dokter",
+                "operationId": "edd333fea89bbd1ae8b1e28e4e4c5c16",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nama": {
+                                        "type": "string"
+                                    },
+                                    "spesialisasi": {
+                                        "type": "string"
+                                    },
+                                    "no_telepon": {
+                                        "type": "string"
+                                    },
+                                    "email": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data dokter berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Dokter tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Dokter"
+                ],
+                "summary": "Menghapus dokter",
+                "operationId": "41eaf5da3f9fbe426dae7e87894feb96",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Dokter berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Dokter tidak ditemukan"
+                    }
+                }
+            }
+        },
+        "/api/jadwal-dokter": {
+            "get": {
+                "tags": [
+                    "Jadwal Dokter"
+                ],
+                "summary": "Menampilkan semua jadwal dokter",
+                "operationId": "acbe99cbb8b1ade3bb774e0cb7efb9cc",
+                "responses": {
+                    "200": {
+                        "description": "Daftar jadwal dokter berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Jadwal Dokter"
+                ],
+                "summary": "Membuat jadwal dokter baru",
+                "operationId": "0e2c783b87743b4adaecd81322ed15e8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "dokter_id",
+                                    "hari",
+                                    "jam_mulai",
+                                    "jam_selesai"
+                                ],
+                                "properties": {
+                                    "dokter_id": {
+                                        "type": "integer"
+                                    },
+                                    "hari": {
+                                        "type": "string"
+                                    },
+                                    "jam_mulai": {
+                                        "type": "string",
+                                        "format": "time"
+                                    },
+                                    "jam_selesai": {
+                                        "type": "string",
+                                        "format": "time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Jadwal dokter berhasil ditambahkan"
+                    }
+                }
+            }
+        },
+        "/api/jadwal-dokter/{id}": {
+            "get": {
+                "tags": [
+                    "Jadwal Dokter"
+                ],
+                "summary": "Menampilkan detail jadwal dokter",
+                "operationId": "8ef0504a12d5eee6c1c14733b3d4b668",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID jadwal dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data jadwal dokter berhasil diambil"
+                    },
+                    "404": {
+                        "description": "Jadwal tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Jadwal Dokter"
+                ],
+                "summary": "Memperbarui jadwal dokter",
+                "operationId": "1e59fe5dbc98cfdc4fd3f9fcf8623139",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID jadwal dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "dokter_id": {
+                                        "type": "integer"
+                                    },
+                                    "hari": {
+                                        "type": "string"
+                                    },
+                                    "jam_mulai": {
+                                        "type": "string",
+                                        "format": "time"
+                                    },
+                                    "jam_selesai": {
+                                        "type": "string",
+                                        "format": "time"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Jadwal dokter berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Jadwal tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Jadwal Dokter"
+                ],
+                "summary": "Menghapus jadwal dokter",
+                "operationId": "d6f19791e8261013b68d6b22d052eb3c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID jadwal dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Jadwal dokter berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Jadwal tidak ditemukan"
+                    }
+                }
+            }
+        },
+        "/api/konsultasi": {
+            "get": {
+                "tags": [
+                    "Konsultasi"
+                ],
+                "summary": "Menampilkan semua data konsultasi",
+                "operationId": "a2433ae594e246c82c3ed2101b70a3be",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil semua data konsultasi"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Konsultasi"
+                ],
+                "summary": "Menyimpan data konsultasi baru",
+                "operationId": "63cb509e0e2a9d687613c0dccfc04ab8",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "pasien_id",
+                                    "dokter_id",
+                                    "jadwal_id",
+                                    "tanggal_konsultasi",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "dokter_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "jadwal_id": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "tanggal_konsultasi": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-04-30"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Dijadwalkan",
+                                            "Selesai",
+                                            "Dibatalkan"
+                                        ],
+                                        "example": "Dijadwalkan"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Konsultasi berhasil disimpan"
+                    },
+                    "500": {
+                        "description": "Gagal menyimpan konsultasi"
+                    }
+                }
+            }
+        },
+        "/api/konsultasi/{id}": {
+            "get": {
+                "tags": [
+                    "Konsultasi"
+                ],
+                "summary": "Menampilkan detail konsultasi",
+                "operationId": "f4eecc2805356f6cce3bfa5f6b52ff5d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID konsultasi",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil detail konsultasi"
+                    },
+                    "404": {
+                        "description": "Konsultasi tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Konsultasi"
+                ],
+                "summary": "Memperbarui data konsultasi",
+                "operationId": "1e5edb38a5e0d98cdc3a8fa72715aee0",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID konsultasi yang akan diperbarui",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer",
+                                        "example": 1
+                                    },
+                                    "dokter_id": {
+                                        "type": "integer",
+                                        "example": 2
+                                    },
+                                    "jadwal_id": {
+                                        "type": "integer",
+                                        "example": 3
+                                    },
+                                    "tanggal_konsultasi": {
+                                        "type": "string",
+                                        "format": "date",
+                                        "example": "2025-04-30"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Dijadwalkan",
+                                            "Selesai",
+                                            "Dibatalkan"
+                                        ],
+                                        "example": "Selesai"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Konsultasi berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Konsultasi tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Konsultasi"
+                ],
+                "summary": "Menghapus data konsultasi",
+                "operationId": "3875a9b484f960edce24cc5c70017c30",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID konsultasi",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Konsultasi berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Konsultasi tidak ditemukan"
+                    }
+                }
+            }
+        },
+        "/api/laporan": {
+            "get": {
+                "tags": [
+                    "Laporan"
+                ],
+                "summary": "Menampilkan semua data laporan",
+                "operationId": "50a73a12a1dd9b19550a543e8aa1e9b6",
+                "responses": {
+                    "200": {
+                        "description": "Data laporan berhasil diambil"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Laporan"
+                ],
+                "summary": "Menyimpan data laporan baru",
+                "operationId": "aa284963348f74431c0ce64feddc402d",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "periode",
+                                    "jumlah_pasien",
+                                    "pendapatan"
+                                ],
+                                "properties": {
+                                    "periode": {
+                                        "type": "string",
+                                        "example": "Januari 2025"
+                                    },
+                                    "jumlah_pasien": {
+                                        "type": "integer",
+                                        "example": 100
+                                    },
+                                    "pendapatan": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 15000000
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Data laporan berhasil disimpan"
+                    }
+                }
+            }
+        },
+        "/api/laporan/{id}": {
+            "get": {
+                "tags": [
+                    "Laporan"
+                ],
+                "summary": "Menampilkan detail laporan berdasarkan ID",
+                "operationId": "2cd73106042bbd4997fc20bb9fc74ebf",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID laporan",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail laporan ditemukan"
+                    },
+                    "404": {
+                        "description": "Laporan tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Laporan"
+                ],
+                "summary": "Memperbarui data laporan",
+                "operationId": "f0cdafd666964eb856e4c2674e11c128",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID laporan",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": false,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "periode": {
+                                        "type": "string",
+                                        "example": "Februari 2025"
+                                    },
+                                    "jumlah_pasien": {
+                                        "type": "integer",
+                                        "example": 120
+                                    },
+                                    "pendapatan": {
+                                        "type": "number",
+                                        "format": "float",
+                                        "example": 17000000
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data laporan berhasil diperbarui"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Laporan"
+                ],
+                "summary": "Menghapus data laporan",
+                "operationId": "03350de3e8f2106e275aa72f88033df3",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID laporan",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Laporan berhasil dihapus"
+                    }
+                }
+            }
+        },
+        "/api/pasien": {
+            "get": {
+                "tags": [
+                    "Pasien"
+                ],
+                "summary": "Menampilkan daftar semua pasien",
+                "operationId": "getPasien",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan daftar pasien"
+                    }
+                }
+            }
+        },
+        "/api/rekam-medis": {
+            "get": {
+                "tags": [
+                    "Rekam Medis"
+                ],
+                "summary": "Menampilkan semua rekam medis",
+                "operationId": "0658dd40d4b7af7c6296f25bb8068147",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil menampilkan semua rekam medis"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Rekam Medis"
+                ],
+                "summary": "Membuat data rekam medis baru",
+                "operationId": "87b30d264734846a474e86f3e9083183",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "pasien_id",
+                                    "tanggal_kunjungan",
+                                    "diagnosis",
+                                    "tindakan",
+                                    "obat"
+                                ],
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer"
+                                    },
+                                    "tanggal_kunjungan": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "diagnosis": {
+                                        "type": "string"
+                                    },
+                                    "tindakan": {
+                                        "type": "string"
+                                    },
+                                    "obat": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Rekam medis berhasil dibuat"
+                    }
+                }
+            }
+        },
+        "/api/rekam-medis/{id}": {
+            "get": {
+                "tags": [
+                    "Rekam Medis"
+                ],
+                "summary": "Menampilkan detail rekam medis",
+                "operationId": "f7efcc160729dd2b81affd2b1a17ec80",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID rekam medis",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail rekam medis ditemukan"
+                    },
+                    "404": {
+                        "description": "Rekam medis tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Rekam Medis"
+                ],
+                "summary": "Memperbarui data rekam medis",
+                "operationId": "a59b4cdcef4c6c8255260fcde71f683c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID rekam medis",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer"
+                                    },
+                                    "tanggal_kunjungan": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "diagnosis": {
+                                        "type": "string"
+                                    },
+                                    "tindakan": {
+                                        "type": "string"
+                                    },
+                                    "obat": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data rekam medis berhasil diperbarui"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Rekam Medis"
+                ],
+                "summary": "Menghapus data rekam medis",
+                "operationId": "72044a702c237950048558db09a5bd3d",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "description": "ID rekam medis",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Rekam medis berhasil dihapus"
+                    }
+                }
+            }
+        }
+    },
+    "tags": [
+        {
+            "name": "Dokter",
+            "description": "Manajemen data dokter"
+        },
+        {
+            "name": "Jadwal Dokter",
+            "description": "Manajemen data jadwal dokter"
+        },
+        {
+            "name": "Konsultasi",
+            "description": "Manajemen data konsultasi pasien"
+        },
+        {
+            "name": "Laporan",
+            "description": "API untuk laporan klinik"
+        },
+        {
+            "name": "Rekam Medis",
+            "description": "Manajemen data rekam medis pasien"
+        },
+        {
+            "name": "Pasien",
+            "description": "Pasien"
+        }
+    ]
+}
