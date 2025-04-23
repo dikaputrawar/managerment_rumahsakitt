@@ -16,6 +16,7 @@ Route::apiResource('konsultasi', KonsultasiController::class);
 Route::apiResource('rekam-medis', RekamMedisController::class);
 Route::apiResource('laporan', LaporanController::class);
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes

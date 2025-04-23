@@ -10,8 +10,8 @@ return new class extends Migration {
             $table->id('jadwal_id'); 
             $table->unsignedBigInteger('dokter_id'); 
             $table->enum('hari', ['Senin', 'Selasa', 'Rabu', 'Kamis', 'Jumat', 'Sabtu', 'Minggu']);
-            $table->time('jam_mulai');
-            $table->time('jam_selesai');
+            $table->string('jam_mulai');
+            $table->string('jam_selesai');
             $table->timestamps();
 
             // Foreign key constraint
