@@ -16,7 +16,6 @@ use App\Models\Pasien;
  *     description="Server API Lokal"
  * )
  */
-
 class PasienController extends Controller
 {
     /**
@@ -31,8 +30,6 @@ class PasienController extends Controller
      *     )
      * )
      */
-    
-
     public function index()
     {
         $pasien = Pasien::all();
@@ -42,6 +39,28 @@ class PasienController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Get(
+     *     path="/api/pasien/{id}",
+     *     operationId="getDetailPasien",
+     *     tags={"Pasien"},
+     *     summary="Menampilkan detail pasien berdasarkan ID",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Detail pasien ditemukan"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pasien tidak ditemukan"
+     *     )
+     * )
+     */
     public function show($id)
     {
         $pasien = Pasien::find($id);
@@ -57,6 +76,28 @@ class PasienController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Post(
+     *     path="/api/pasien",
+     *     operationId="storePasien",
+     *     tags={"Pasien"},
+     *     summary="Menyimpan data pasien baru",
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nama","tanggal_lahir","jenis_kelamin","alamat"},
+     *             @OA\Property(property="nama", type="string"),
+     *             @OA\Property(property="tanggal_lahir", type="string", format="date"),
+     *             @OA\Property(property="jenis_kelamin", type="string"),
+     *             @OA\Property(property="alamat", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Data pasien berhasil disimpan"
+     *     )
+     * )
+     */
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -74,6 +115,38 @@ class PasienController extends Controller
         ], 201);
     }
 
+    /**
+     * @OA\Put(
+     *     path="/api/pasien/{id}",
+     *     operationId="updatePasien",
+     *     tags={"Pasien"},
+     *     summary="Memperbarui data pasien",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             required={"nama","tanggal_lahir","jenis_kelamin","alamat"},
+     *             @OA\Property(property="nama", type="string"),
+     *             @OA\Property(property="tanggal_lahir", type="string", format="date"),
+     *             @OA\Property(property="jenis_kelamin", type="string"),
+     *             @OA\Property(property="alamat", type="string")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data pasien berhasil diperbarui"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pasien tidak ditemukan"
+     *     )
+     * )
+     */
     public function update(Request $request, $id)
     {
         $pasien = Pasien::find($id);
@@ -98,6 +171,28 @@ class PasienController extends Controller
         ], 200);
     }
 
+    /**
+     * @OA\Delete(
+     *     path="/api/pasien/{id}",
+     *     operationId="deletePasien",
+     *     tags={"Pasien"},
+     *     summary="Menghapus data pasien",
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Pasien berhasil dihapus"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pasien tidak ditemukan"
+     *     )
+     * )
+     */
     public function destroy($id)
     {
         $pasien = Pasien::find($id);
@@ -114,5 +209,4 @@ class PasienController extends Controller
             'deleted_id' => $id
         ], 200);
     }
-    
 }

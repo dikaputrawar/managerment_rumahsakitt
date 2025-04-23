@@ -698,6 +698,157 @@
                         "description": "Berhasil mendapatkan daftar pasien"
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "Pasien"
+                ],
+                "summary": "Menyimpan data pasien baru",
+                "operationId": "storePasien",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama",
+                                    "tanggal_lahir",
+                                    "jenis_kelamin",
+                                    "alamat"
+                                ],
+                                "properties": {
+                                    "nama": {
+                                        "type": "string"
+                                    },
+                                    "tanggal_lahir": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "jenis_kelamin": {
+                                        "type": "string"
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Data pasien berhasil disimpan"
+                    }
+                }
+            }
+        },
+        "/api/pasien/{id}": {
+            "get": {
+                "tags": [
+                    "Pasien"
+                ],
+                "summary": "Menampilkan detail pasien berdasarkan ID",
+                "operationId": "getDetailPasien",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail pasien ditemukan"
+                    },
+                    "404": {
+                        "description": "Pasien tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Pasien"
+                ],
+                "summary": "Memperbarui data pasien",
+                "operationId": "updatePasien",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama",
+                                    "tanggal_lahir",
+                                    "jenis_kelamin",
+                                    "alamat"
+                                ],
+                                "properties": {
+                                    "nama": {
+                                        "type": "string"
+                                    },
+                                    "tanggal_lahir": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "jenis_kelamin": {
+                                        "type": "string"
+                                    },
+                                    "alamat": {
+                                        "type": "string"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data pasien berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Pasien tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Pasien"
+                ],
+                "summary": "Menghapus data pasien",
+                "operationId": "deletePasien",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pasien berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Pasien tidak ditemukan"
+                    }
+                }
             }
         },
         "/api/rekam-medis": {
