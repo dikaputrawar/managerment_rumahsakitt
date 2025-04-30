@@ -8,7 +8,9 @@ use App\Http\Controllers\PasienController;
 use App\Http\Controllers\KonsultasiController;
 use App\Http\Controllers\RekamMedisController;
 use App\Http\Controllers\LaporanController;
+use App\Http\Controllers\UserController;
 
+Route::apiResource('user', UserController::class);
 Route::apiResource('dokter', DokterController::class);
 Route::apiResource('jadwal-dokter', JadwalDokterController::class);
 Route::apiResource('pasien', PasienController::class);
