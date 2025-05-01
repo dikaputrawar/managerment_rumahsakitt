@@ -1,9 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\JadwalDokter;
+use App\Http\Controllers\Controller;
+
 
 /**
  * @OA\Tag(
@@ -11,7 +13,7 @@ use App\Models\JadwalDokter;
  *     description="Manajemen data jadwal dokter"
  * )
  */
-class JadwalDokterController extends Controller
+class JadwalDokterController extends controller
 {
     /**
      * @OA\Get(

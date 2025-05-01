@@ -1,9 +1,10 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
 use Illuminate\Http\Request;
 use App\Models\Dokter;
+use App\Http\Controllers\Controller;
 
 /**
  * @OA\Tag(

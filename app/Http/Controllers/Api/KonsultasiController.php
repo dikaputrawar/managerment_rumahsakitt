@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Konsultasi;
 use Illuminate\Support\Facades\Log;
-use Illuminate\Http\JsonResponse;
 
 /**
  * @OA\Tag(

@@ -21,7 +21,7 @@
                     "Dokter"
                 ],
                 "summary": "Menampilkan semua dokter",
-                "operationId": "7470afc3ecdc948c80b78d87c9b7a397",
+                "operationId": "56513231100bce5b3fbc8d8665026b73",
                 "responses": {
                     "200": {
                         "description": "Daftar dokter berhasil diambil"
@@ -33,7 +33,7 @@
                     "Dokter"
                 ],
                 "summary": "Menambahkan dokter baru",
-                "operationId": "86845a036fc0a852519e70cf6e32bd86",
+                "operationId": "0ed4d306239fbc82987eb608fd5b7c32",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -77,7 +77,7 @@
                     "Dokter"
                 ],
                 "summary": "Menampilkan detail dokter",
-                "operationId": "9ae2099d069d0f5a9725591fc710c8bb",
+                "operationId": "8a5c11bbb78172077f0c33f66c455a8c",
                 "parameters": [
                     {
                         "name": "id",
@@ -103,7 +103,7 @@
                     "Dokter"
                 ],
                 "summary": "Memperbarui data dokter",
-                "operationId": "edd333fea89bbd1ae8b1e28e4e4c5c16",
+                "operationId": "3c37ae6731c0581fcf8b24593d50b40c",
                 "parameters": [
                     {
                         "name": "id",
@@ -153,7 +153,7 @@
                     "Dokter"
                 ],
                 "summary": "Menghapus dokter",
-                "operationId": "41eaf5da3f9fbe426dae7e87894feb96",
+                "operationId": "a369d595c876867767ab1ffd27c14f53",
                 "parameters": [
                     {
                         "name": "id",
@@ -181,7 +181,7 @@
                     "Jadwal Dokter"
                 ],
                 "summary": "Menampilkan semua jadwal dokter",
-                "operationId": "acbe99cbb8b1ade3bb774e0cb7efb9cc",
+                "operationId": "88efb88118193568d552a36ff1a185d8",
                 "responses": {
                     "200": {
                         "description": "Daftar jadwal dokter berhasil diambil"
@@ -193,7 +193,7 @@
                     "Jadwal Dokter"
                 ],
                 "summary": "Membuat jadwal dokter baru",
-                "operationId": "0e2c783b87743b4adaecd81322ed15e8",
+                "operationId": "8392d8c177faced7a2591549dc083969",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -239,7 +239,7 @@
                     "Jadwal Dokter"
                 ],
                 "summary": "Menampilkan detail jadwal dokter",
-                "operationId": "8ef0504a12d5eee6c1c14733b3d4b668",
+                "operationId": "e647942c91a6bc0220eb5d4c5ac6696e",
                 "parameters": [
                     {
                         "name": "id",
@@ -265,7 +265,7 @@
                     "Jadwal Dokter"
                 ],
                 "summary": "Memperbarui jadwal dokter",
-                "operationId": "1e59fe5dbc98cfdc4fd3f9fcf8623139",
+                "operationId": "71aab38e1e0e050ea01cf3bad1cdcfc8",
                 "parameters": [
                     {
                         "name": "id",
@@ -317,7 +317,7 @@
                     "Jadwal Dokter"
                 ],
                 "summary": "Menghapus jadwal dokter",
-                "operationId": "d6f19791e8261013b68d6b22d052eb3c",
+                "operationId": "63e01e26c224023aeb9bbd3e608e3a95",
                 "parameters": [
                     {
                         "name": "id",
@@ -345,7 +345,7 @@
                     "Konsultasi"
                 ],
                 "summary": "Menampilkan semua data konsultasi",
-                "operationId": "a2433ae594e246c82c3ed2101b70a3be",
+                "operationId": "3a57cd90c3a84dda05941bf7cf6bfed4",
                 "responses": {
                     "200": {
                         "description": "Berhasil mengambil semua data konsultasi"
@@ -357,7 +357,7 @@
                     "Konsultasi"
                 ],
                 "summary": "Menyimpan data konsultasi baru",
-                "operationId": "63cb509e0e2a9d687613c0dccfc04ab8",
+                "operationId": "882765e8d04b2f3530f9875e7ced8f1f",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -419,7 +419,7 @@
                     "Konsultasi"
                 ],
                 "summary": "Menampilkan detail konsultasi",
-                "operationId": "f4eecc2805356f6cce3bfa5f6b52ff5d",
+                "operationId": "7a69db09f31e76446f2b632982b57081",
                 "parameters": [
                     {
                         "name": "id",
@@ -445,7 +445,7 @@
                     "Konsultasi"
                 ],
                 "summary": "Memperbarui data konsultasi",
-                "operationId": "1e5edb38a5e0d98cdc3a8fa72715aee0",
+                "operationId": "114a0d580c72f0e0eee9a44207654b5b",
                 "parameters": [
                     {
                         "name": "id",
@@ -509,7 +509,7 @@
                     "Konsultasi"
                 ],
                 "summary": "Menghapus data konsultasi",
-                "operationId": "3875a9b484f960edce24cc5c70017c30",
+                "operationId": "cd47f6a62273e14dad622c39c34c46f8",
                 "parameters": [
                     {
                         "name": "id",
@@ -537,7 +537,7 @@
                     "Laporan"
                 ],
                 "summary": "Menampilkan semua data laporan",
-                "operationId": "50a73a12a1dd9b19550a543e8aa1e9b6",
+                "operationId": "076e4c0226607e0351c07a8e1ac1893c",
                 "responses": {
                     "200": {
                         "description": "Data laporan berhasil diambil"
@@ -549,7 +549,7 @@
                     "Laporan"
                 ],
                 "summary": "Menyimpan data laporan baru",
-                "operationId": "aa284963348f74431c0ce64feddc402d",
+                "operationId": "d97fa4e1a3072819b633afae97511b2e",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -593,7 +593,7 @@
                     "Laporan"
                 ],
                 "summary": "Menampilkan detail laporan berdasarkan ID",
-                "operationId": "2cd73106042bbd4997fc20bb9fc74ebf",
+                "operationId": "c38dac1985b9507737fabf48a36d6580",
                 "parameters": [
                     {
                         "name": "id",
@@ -619,7 +619,7 @@
                     "Laporan"
                 ],
                 "summary": "Memperbarui data laporan",
-                "operationId": "f0cdafd666964eb856e4c2674e11c128",
+                "operationId": "cf5b58b0489047876ec7e684d8482324",
                 "parameters": [
                     {
                         "name": "id",
@@ -667,7 +667,7 @@
                     "Laporan"
                 ],
                 "summary": "Menghapus data laporan",
-                "operationId": "03350de3e8f2106e275aa72f88033df3",
+                "operationId": "c9e61853f673d1cb6998868e949f0249",
                 "parameters": [
                     {
                         "name": "id",
@@ -857,7 +857,7 @@
                     "Rekam Medis"
                 ],
                 "summary": "Menampilkan semua rekam medis",
-                "operationId": "0658dd40d4b7af7c6296f25bb8068147",
+                "operationId": "d23d3249a6e0172185629e0425c0ca44",
                 "responses": {
                     "200": {
                         "description": "Berhasil menampilkan semua rekam medis"
@@ -869,7 +869,7 @@
                     "Rekam Medis"
                 ],
                 "summary": "Membuat data rekam medis baru",
-                "operationId": "87b30d264734846a474e86f3e9083183",
+                "operationId": "8d3b0bd074c34f9296f940f677b94169",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -918,7 +918,7 @@
                     "Rekam Medis"
                 ],
                 "summary": "Menampilkan detail rekam medis",
-                "operationId": "f7efcc160729dd2b81affd2b1a17ec80",
+                "operationId": "2c1b5e363c3cfd3d97ad0eda55e76886",
                 "parameters": [
                     {
                         "name": "id",
@@ -944,7 +944,7 @@
                     "Rekam Medis"
                 ],
                 "summary": "Memperbarui data rekam medis",
-                "operationId": "a59b4cdcef4c6c8255260fcde71f683c",
+                "operationId": "1bb0b34bcf4b3bcfbe838fc277b24931",
                 "parameters": [
                     {
                         "name": "id",
@@ -995,7 +995,7 @@
                     "Rekam Medis"
                 ],
                 "summary": "Menghapus data rekam medis",
-                "operationId": "72044a702c237950048558db09a5bd3d",
+                "operationId": "bceaaa368c3fbec6e785edf39ed673a1",
                 "parameters": [
                     {
                         "name": "id",
@@ -1020,7 +1020,7 @@
                     "User"
                 ],
                 "summary": "Menampilkan semua user",
-                "operationId": "971db9bc974c0e607288cfe7ecc10096",
+                "operationId": "ef3192335324c07faff67807a2e8a2f8",
                 "responses": {
                     "200": {
                         "description": "Daftar semua user"
@@ -1032,7 +1032,7 @@
                     "User"
                 ],
                 "summary": "Membuat user baru",
-                "operationId": "089999749fbdec98922de2f74ba8d540",
+                "operationId": "287bc3ec931e652c54bb2ddb777040bc",
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1079,7 +1079,7 @@
                     "User"
                 ],
                 "summary": "Menampilkan detail user",
-                "operationId": "d8f696420bea235f4916124c9ba1c507",
+                "operationId": "430618624b90f3b94e90e86921470fdd",
                 "parameters": [
                     {
                         "name": "id",
@@ -1104,7 +1104,7 @@
                     "User"
                 ],
                 "summary": "Memperbarui data user",
-                "operationId": "5e09c26a0abb2b1bf040badb2d9c69ba",
+                "operationId": "479f33f268cca6dba677c396b495b60d",
                 "parameters": [
                     {
                         "name": "id",
@@ -1149,7 +1149,7 @@
                     "User"
                 ],
                 "summary": "Menghapus user",
-                "operationId": "f8d7aea516ee464d0afee90f3a1a1722",
+                "operationId": "fb7c6cd121c930b66eefc7569b0f0ab3",
                 "parameters": [
                     {
                         "name": "id",

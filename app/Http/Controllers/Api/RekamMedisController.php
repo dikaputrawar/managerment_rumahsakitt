@@ -1,7 +1,8 @@
 <?php 
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RekamMedis;
 
@@ -11,7 +12,7 @@ use App\Models\RekamMedis;
  *     description="Manajemen data rekam medis pasien"
  * )
  */
-class RekamMedisController extends Controller 
+class RekamMedisController extends Controller
 {
     /**
      * @OA\Get(
