@@ -175,6 +175,151 @@
                 }
             }
         },
+        "/api/inventory": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Menampilkan semua data inventaris obat",
+                "operationId": "getAllInventory",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan data inventaris"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Menyimpan data inventaris obat baru",
+                "operationId": "createInventory",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama_obat",
+                                    "kategori",
+                                    "stok",
+                                    "harga",
+                                    "exp_date"
+                                ],
+                                "properties": {
+                                    "nama_obat": {
+                                        "type": "string"
+                                    },
+                                    "kategori": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Tablet",
+                                            "Syrup",
+                                            "Capsule",
+                                            "Injection"
+                                        ]
+                                    },
+                                    "stok": {
+                                        "type": "integer"
+                                    },
+                                    "harga": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "exp_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Data inventaris berhasil disimpan"
+                    }
+                }
+            }
+        },
+        "/api/inventory/{id}": {
+            "get": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Menampilkan data inventaris berdasarkan ID",
+                "operationId": "getInventoryById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Inventaris ditemukan"
+                    },
+                    "404": {
+                        "description": "Inventaris tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Memperbarui data inventaris obat",
+                "operationId": "updateInventory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data inventaris berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Inventaris tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Inventory"
+                ],
+                "summary": "Menghapus data inventaris obat",
+                "operationId": "deleteInventory",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "204": {
+                        "description": "Inventaris berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Inventaris tidak ditemukan"
+                    }
+                }
+            }
+        },
         "/api/jadwal-dokter": {
             "get": {
                 "tags": [
@@ -965,58 +1110,9 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "konsultasi_id",
-                                    "amount",
-                                    "payment_date",
-                                    "method",
-                                    "status"
-                                ],
-                                "properties": {
-                                    "konsultasi_id": {
-                                        "type": "integer"
-                                    },
-                                    "amount": {
-                                        "type": "number",
-                                        "format": "float"
-                                    },
-                                    "payment_date": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "method": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Cash",
-                                            "Credit Card",
-                                            "Transfer"
-                                        ]
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Pending",
-                                            "Paid",
-                                            "Cancelled"
-                                        ]
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
-                        "description": "Data pembayaran berhasil diperbarui"
-                    },
-                    "404": {
-                        "description": "Pembayaran tidak ditemukan"
+                        "description": "Pembayaran berhasil diperbarui"
                     }
                 }
             },
@@ -1039,9 +1135,6 @@
                 "responses": {
                     "200": {
                         "description": "Pembayaran berhasil dihapus"
-                    },
-                    "404": {
-                        "description": "Pembayaran tidak ditemukan"
                     }
                 }
             }
@@ -1370,6 +1463,10 @@
         {
             "name": "Dokter",
             "description": "Manajemen data dokter"
+        },
+        {
+            "name": "Inventory",
+            "description": "Manajemen inventaris obat di rumah sakit"
         },
         {
             "name": "Jadwal Dokter",

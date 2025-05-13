@@ -11,6 +11,8 @@ class Inventory extends Model
 
     protected $table = 'inventory';
 
+    protected $primaryKey = 'inventory_id';
+
     protected $fillable = [
         'nama_obat',
         'kategori',
@@ -19,5 +21,8 @@ class Inventory extends Model
         'exp_date',
     ];
 
-    protected $dates = ['exp_date', 'created_at', 'updated_at'];
+    protected $casts = [
+        'exp_date' => 'date',
+        'harga' => 'decimal:2',
+    ];
 }

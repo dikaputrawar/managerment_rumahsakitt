@@ -1,7 +1,8 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Inventory;
 
@@ -104,10 +105,7 @@ class InventoryController extends Controller
 
         $inventory = Inventory::create($data);
 
-        return response()->json([
-            'message' => 'Data inventaris berhasil disimpan',
-            'data' => $inventory
-        ], 201);
+        return response()->json(['message' => 'Data inventaris berhasil disimpan', 'data' => $inventory], 201);
     }
 
     /**
@@ -122,25 +120,8 @@ class InventoryController extends Controller
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nama_obat","kategori","stok","harga","exp_date"},
-     *             @OA\Property(property="nama_obat", type="string"),
-     *             @OA\Property(property="kategori", type="string", enum={"Tablet", "Syrup", "Capsule", "Injection"}),
-     *             @OA\Property(property="stok", type="integer"),
-     *             @OA\Property(property="harga", type="number", format="float"),
-     *             @OA\Property(property="exp_date", type="string", format="date")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Data inventaris berhasil diperbarui"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Inventaris tidak ditemukan"
-     *     )
+     *     @OA\Response(response=200, description="Data inventaris berhasil diperbarui"),
+     *     @OA\Response(response=404, description="Inventaris tidak ditemukan")
      * )
      */
     public function update(Request $request, $id)
@@ -151,19 +132,16 @@ class InventoryController extends Controller
         }
 
         $data = $request->validate([
-            'nama_obat' => 'required|string',
-            'kategori' => 'required|in:Tablet,Syrup,Capsule,Injection',
-            'stok' => 'required|integer',
-            'harga' => 'required|numeric',
-            'exp_date' => 'required|date',
+            'nama_obat' => 'sometimes|string',
+            'kategori' => 'sometimes|in:Tablet,Syrup,Capsule,Injection',
+            'stok' => 'sometimes|integer',
+            'harga' => 'sometimes|numeric',
+            'exp_date' => 'sometimes|date',
         ]);
 
         $inventory->update($data);
 
-        return response()->json([
-            'message' => 'Data inventaris berhasil diperbarui',
-            'data' => $inventory
-        ], 200);
+        return response()->json(['message' => 'Data inventaris berhasil diperbarui', 'data' => $inventory], 200);
     }
 
     /**
@@ -178,14 +156,8 @@ class InventoryController extends Controller
      *         required=true,
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Inventaris berhasil dihapus"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Inventaris tidak ditemukan"
-     *     )
+     *     @OA\Response(response=204, description="Inventaris berhasil dihapus"),
+     *     @OA\Response(response=404, description="Inventaris tidak ditemukan")
      * )
      */
     public function destroy($id)
@@ -196,10 +168,6 @@ class InventoryController extends Controller
         }
 
         $inventory->delete();
-
-        return response()->json([
-            'message' => 'Inventaris berhasil dihapus',
-            'deleted_id' => $id
-        ], 200);
+        return response()->json(['message' => 'Inventaris berhasil dihapus'], 204);
     }
 }
