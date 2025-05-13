@@ -851,6 +851,201 @@
                 }
             }
         },
+        "/api/payments": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Menampilkan daftar semua pembayaran",
+                "operationId": "getPayments",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan daftar pembayaran"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Menyimpan data pembayaran baru",
+                "operationId": "storePayment",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "konsultasi_id",
+                                    "amount",
+                                    "payment_date",
+                                    "method",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "konsultasi_id": {
+                                        "type": "integer"
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "payment_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "method": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Cash",
+                                            "Credit Card",
+                                            "Transfer"
+                                        ]
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Pending",
+                                            "Paid",
+                                            "Cancelled"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Pembayaran berhasil disimpan"
+                    }
+                }
+            }
+        },
+        "/api/payments/{id}": {
+            "get": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Menampilkan detail pembayaran berdasarkan ID",
+                "operationId": "getPaymentDetail",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail pembayaran ditemukan"
+                    },
+                    "404": {
+                        "description": "Pembayaran tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Memperbarui data pembayaran",
+                "operationId": "updatePayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "konsultasi_id",
+                                    "amount",
+                                    "payment_date",
+                                    "method",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "konsultasi_id": {
+                                        "type": "integer"
+                                    },
+                                    "amount": {
+                                        "type": "number",
+                                        "format": "float"
+                                    },
+                                    "payment_date": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "method": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Cash",
+                                            "Credit Card",
+                                            "Transfer"
+                                        ]
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Pending",
+                                            "Paid",
+                                            "Cancelled"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data pembayaran berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Pembayaran tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Payments"
+                ],
+                "summary": "Menghapus data pembayaran",
+                "operationId": "deletePayment",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Pembayaran berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Pembayaran tidak ditemukan"
+                    }
+                }
+            }
+        },
         "/api/rekam-medis": {
             "get": {
                 "tags": [
@@ -1187,6 +1382,10 @@
         {
             "name": "Laporan",
             "description": "API untuk laporan klinik"
+        },
+        {
+            "name": "Payments",
+            "description": "Manajemen data pembayaran"
         },
         {
             "name": "Rekam Medis",
