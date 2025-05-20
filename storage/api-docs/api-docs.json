@@ -1139,6 +1139,144 @@
                 }
             }
         },
+        "/api/poli": {
+            "get": {
+                "tags": [
+                    "Poli"
+                ],
+                "summary": "Menampilkan semua data poli",
+                "operationId": "56d5021eadd485e42a2df10c2dad36b0",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mengambil data poli"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Poli"
+                ],
+                "summary": "Membuat poli baru",
+                "operationId": "dc6f5536ac888fffedc93b62b51d384a",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "nama_poli"
+                                ],
+                                "properties": {
+                                    "nama_poli": {
+                                        "type": "string",
+                                        "example": "Poli Gigi"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Poli berhasil dibuat"
+                    }
+                }
+            }
+        },
+        "/api/poli/{id}": {
+            "get": {
+                "tags": [
+                    "Poli"
+                ],
+                "summary": "Menampilkan detail poli",
+                "operationId": "4fae434a6f8aaa6ec003f61ed648d5ce",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data poli ditemukan"
+                    },
+                    "404": {
+                        "description": "Poli tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Poli"
+                ],
+                "summary": "Memperbarui data poli",
+                "operationId": "7c97afe797b07f1ad7a9383bb5553963",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "nama_poli": {
+                                        "type": "string",
+                                        "example": "Poli Anak"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data poli berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Poli tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Poli"
+                ],
+                "summary": "Menghapus data poli",
+                "operationId": "339977a6e91d8a83b1c7fcac36986d10",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Poli berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Poli tidak ditemukan"
+                    }
+                }
+            }
+        },
         "/api/rekam-medis": {
             "get": {
                 "tags": [
@@ -1483,6 +1621,10 @@
         {
             "name": "Payments",
             "description": "Manajemen data pembayaran"
+        },
+        {
+            "name": "Poli",
+            "description": "Manajemen data poli"
         },
         {
             "name": "Rekam Medis",

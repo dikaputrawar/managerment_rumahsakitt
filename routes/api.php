@@ -11,6 +11,9 @@ use App\Http\Controllers\Api\LaporanController;
 use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\InventoryController;  
 use App\Http\Controllers\Api\PaymentController;    
+use App\Http\Controllers\Api\PoliController;
+
+Route::apiResource('poli', PoliController::class);
 
 /*
 |--------------------------------------------------------------------------
