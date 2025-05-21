@@ -15,6 +15,183 @@
         }
     ],
     "paths": {
+        "/api/antrean": {
+            "get": {
+                "tags": [
+                    "Antrean"
+                ],
+                "summary": "Menampilkan semua data antrean",
+                "operationId": "getAntrean",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan daftar antrean"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Antrean"
+                ],
+                "summary": "Membuat antrean baru",
+                "operationId": "storeAntrean",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "pasien_id",
+                                    "nomor_antrean",
+                                    "status",
+                                    "tanggal"
+                                ],
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer"
+                                    },
+                                    "nomor_antrean": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "menunggu",
+                                            "dipanggil",
+                                            "selesai",
+                                            "batal"
+                                        ]
+                                    },
+                                    "tanggal": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Antrean berhasil dibuat"
+                    }
+                }
+            }
+        },
+        "/api/antrean/{id}": {
+            "get": {
+                "tags": [
+                    "Antrean"
+                ],
+                "summary": "Menampilkan detail antrean berdasarkan ID",
+                "operationId": "getDetailAntrean",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Detail antrean ditemukan"
+                    },
+                    "404": {
+                        "description": "Antrean tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Antrean"
+                ],
+                "summary": "Memperbarui data antrean",
+                "operationId": "updateAntrean",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "pasien_id",
+                                    "nomor_antrean",
+                                    "status",
+                                    "tanggal"
+                                ],
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer"
+                                    },
+                                    "nomor_antrean": {
+                                        "type": "string"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "menunggu",
+                                            "dipanggil",
+                                            "selesai",
+                                            "batal"
+                                        ]
+                                    },
+                                    "tanggal": {
+                                        "type": "string",
+                                        "format": "date"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Antrean berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Antrean tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Antrean"
+                ],
+                "summary": "Menghapus data antrean",
+                "operationId": "deleteAntrean",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Antrean berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Antrean tidak ditemukan"
+                    }
+                }
+            }
+        },
         "/api/dokter": {
             "get": {
                 "tags": [
@@ -1988,6 +2165,10 @@
         {
             "name": "User",
             "description": "Manajemen data pengguna sistem"
+        },
+        {
+            "name": "Antrean",
+            "description": "Antrean"
         },
         {
             "name": "Pasien",
