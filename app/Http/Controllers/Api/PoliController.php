@@ -7,17 +7,6 @@ use Illuminate\Http\Request;
 use App\Models\Poli;
 
 /**
- * @OA\Info(
- *     title="API Poli",
- *     version="1.0.0",
- *     description="Dokumentasi API untuk manajemen data poli"
- * )
- * 
- * @OA\Server(
- *     url="http://localhost:8000",
- *     description="Localhost Server"
- * )
- * 
  * @OA\Tag(
  *     name="Poli",
  *     description="Manajemen data poli"
