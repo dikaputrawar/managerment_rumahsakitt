@@ -13,6 +13,7 @@ use App\Http\Controllers\Api\InventoryController;
 use App\Http\Controllers\Api\PaymentController;    
 use App\Http\Controllers\Api\PoliController;
 use App\Http\Controllers\Api\PengambilnObatController;
+use App\Http\Controllers\PendaftaranController;
 
 Route::apiResource('poli', PoliController::class);
 
@@ -37,6 +38,7 @@ Route::apiResource('laporan', LaporanController::class);
 Route::apiResource('inventory', InventoryController::class);
 Route::apiResource('payments', PaymentController::class);
 Route::apiResource('pengambilan-obat', PengambilanObatController::class);
+Route::apiResource('pendaftaran', PendaftaranController::class);
 
 
 // Route default untuk user (sanctum auth)
