@@ -12,12 +12,15 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\InventoryController;  
 use App\Http\Controllers\Api\PaymentController;    
 use App\Http\Controllers\Api\PoliController;
+<<<<<<< HEAD
 use App\Http\Controllers\Api\PengambilanObatController;
 use App\Http\Controllers\PendaftaranController;
+=======
+>>>>>>> 2e09241e70b3c5fcdba4fac7d1b2c6e34badf207
 
 Route::apiResource('poli', PoliController::class);
 
-/*
+/* 
 |--------------------------------------------------------------------------
 | API Routes
 |--------------------------------------------------------------------------
@@ -39,7 +42,6 @@ Route::apiResource('inventory', InventoryController::class);
 Route::apiResource('payments', PaymentController::class);
 Route::apiResource('pengambilan-obat', PengambilanObatController::class);
 Route::apiResource('pendaftaran', PendaftaranController::class);
-
 
 // Route default untuk user (sanctum auth)
 Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
