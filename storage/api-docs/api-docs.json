@@ -15,6 +15,164 @@
         }
     ],
     "paths": {
+        "/api/pendaftaran": {
+            "get": {
+                "tags": [
+                    "Pendaftaran"
+                ],
+                "summary": "Ambil semua data pendaftaran",
+                "operationId": "fc2d9c894e85b3e7ac8663bb3f8acd30",
+                "responses": {
+                    "200": {
+                        "description": "Sukses"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Pendaftaran"
+                ],
+                "summary": "Tambah pendaftaran baru",
+                "operationId": "2e8c3aec889b6e28d4d6838e3b4b4cf4",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "pasien_id",
+                                    "poli_id",
+                                    "status_bpjs"
+                                ],
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer"
+                                    },
+                                    "poli_id": {
+                                        "type": "integer"
+                                    },
+                                    "status_bpjs": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Ya",
+                                            "Tidak"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Berhasil ditambahkan"
+                    }
+                }
+            }
+        },
+        "/api/pendaftaran/{id}": {
+            "get": {
+                "tags": [
+                    "Pendaftaran"
+                ],
+                "summary": "Ambil detail pendaftaran",
+                "operationId": "b22b15405718686168ca583323db80f7",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data ditemukan"
+                    },
+                    "404": {
+                        "description": "Tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Pendaftaran"
+                ],
+                "summary": "Update pendaftaran",
+                "operationId": "b5ea917ddea63b53e17880efd7cd0f7c",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer"
+                                    },
+                                    "poli_id": {
+                                        "type": "integer"
+                                    },
+                                    "status_bpjs": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Ya",
+                                            "Tidak"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Update sukses"
+                    },
+                    "404": {
+                        "description": "Tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Pendaftaran"
+                ],
+                "summary": "Hapus pendaftaran",
+                "operationId": "e57a669481e9c4989a3075bf5be7b416",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Tidak ditemukan"
+                    }
+                }
+            }
+        },
         "/api/dokter": {
             "get": {
                 "tags": [
@@ -1139,6 +1297,180 @@
                 }
             }
         },
+        "/api/pengambilan-obat": {
+            "get": {
+                "tags": [
+                    "Pengambilan Obat"
+                ],
+                "summary": "Menampilkan semua data pengambilan obat",
+                "operationId": "getAllPengambilanObat",
+                "responses": {
+                    "200": {
+                        "description": "Berhasil mendapatkan data"
+                    }
+                }
+            },
+            "post": {
+                "tags": [
+                    "Pengambilan Obat"
+                ],
+                "summary": "Menyimpan data pengambilan obat",
+                "operationId": "createPengambilanObat",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "pasien_id",
+                                    "inventory_id",
+                                    "jumlah",
+                                    "tanggal_ambil",
+                                    "status"
+                                ],
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer"
+                                    },
+                                    "inventory_id": {
+                                        "type": "integer"
+                                    },
+                                    "jumlah": {
+                                        "type": "integer"
+                                    },
+                                    "tanggal_ambil": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Diambil",
+                                            "Belum"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Data berhasil disimpan"
+                    }
+                }
+            }
+        },
+        "/api/pengambilan-obat/{id}": {
+            "get": {
+                "tags": [
+                    "Pengambilan Obat"
+                ],
+                "summary": "Menampilkan detail pengambilan obat",
+                "operationId": "getPengambilanObatById",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data ditemukan"
+                    },
+                    "404": {
+                        "description": "Data tidak ditemukan"
+                    }
+                }
+            },
+            "put": {
+                "tags": [
+                    "Pengambilan Obat"
+                ],
+                "summary": "Memperbarui data pengambilan obat",
+                "operationId": "updatePengambilanObat",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "pasien_id": {
+                                        "type": "integer"
+                                    },
+                                    "inventory_id": {
+                                        "type": "integer"
+                                    },
+                                    "jumlah": {
+                                        "type": "integer"
+                                    },
+                                    "tanggal_ambil": {
+                                        "type": "string",
+                                        "format": "date"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "enum": [
+                                            "Diambil",
+                                            "Belum"
+                                        ]
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Data tidak ditemukan"
+                    }
+                }
+            },
+            "delete": {
+                "tags": [
+                    "Pengambilan Obat"
+                ],
+                "summary": "Menghapus data pengambilan obat",
+                "operationId": "deletePengambilanObat",
+                "parameters": [
+                    {
+                        "name": "id",
+                        "in": "path",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Data berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Data tidak ditemukan"
+                    }
+                }
+            }
+        },
         "/api/poli": {
             "get": {
                 "tags": [
@@ -1599,6 +1931,9 @@
     },
     "tags": [
         {
+            "name": "Pendaftaran"
+        },
+        {
             "name": "Dokter",
             "description": "Manajemen data dokter"
         },
@@ -1621,6 +1956,10 @@
         {
             "name": "Payments",
             "description": "Manajemen data pembayaran"
+        },
+        {
+            "name": "Pengambilan Obat",
+            "description": "Manajemen data pengambilan obat oleh pasien"
         },
         {
             "name": "Poli",
