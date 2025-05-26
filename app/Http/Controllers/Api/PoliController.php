@@ -30,19 +30,32 @@ class PoliController extends Controller
         return response()->json(Poli::all());
     }
 
-    /**
+        /**
      * @OA\Post(
      *     path="/api/poli",
      *     tags={"Poli"},
      *     summary="Membuat poli baru",
-     *     @OA\RequestBody(
+     *     description="Menambahkan data poli baru melalui parameter query",
+     *
+     *     @OA\Parameter(
+     *         name="nama_poli",
+     *         in="query",
      *         required=true,
+     *         description="Nama poli",
+     *         @OA\Schema(type="string", example="Poli Gigi")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=201,
+     *         description="Poli berhasil dibuat",
      *         @OA\JsonContent(
-     *             required={"nama_poli"},
-     *             @OA\Property(property="nama_poli", type="string", example="Poli Gigi")
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="nama_poli", type="string", example="Poli Gigi"),
+     *             @OA\Property(property="created_at", type="string", format="date-time"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time")
      *         )
      *     ),
-     *     @OA\Response(response=201, description="Poli berhasil dibuat")
+     *     @OA\Response(response=400, description="Data tidak valid")
      * )
      */
     public function store(Request $request)
@@ -54,6 +67,7 @@ class PoliController extends Controller
         $poli = Poli::create($validated);
         return response()->json($poli, 201);
     }
+
 
     /**
      * @OA\Get(
@@ -81,25 +95,42 @@ class PoliController extends Controller
         return response()->json($poli);
     }
 
-    /**
+        /**
      * @OA\Put(
      *     path="/api/poli/{id}",
      *     tags={"Poli"},
      *     summary="Memperbarui data poli",
+     *     description="Memperbarui nama poli berdasarkan ID",
+     *
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         @OA\Schema(type="integer")
+     *         description="ID poli yang ingin diperbarui",
+     *         @OA\Schema(type="integer", example=1)
      *     ),
-     *     @OA\RequestBody(
+     *     @OA\Parameter(
+     *         name="nama_poli",
+     *         in="query",
      *         required=true,
+     *         description="Nama poli baru",
+     *         @OA\Schema(type="string", example="Poli Anak")
+     *     ),
+     *
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data poli berhasil diperbarui",
      *         @OA\JsonContent(
-     *             @OA\Property(property="nama_poli", type="string", example="Poli Anak")
+     *             @OA\Property(property="id", type="integer", example=1),
+     *             @OA\Property(property="nama_poli", type="string", example="Poli Anak"),
+     *             @OA\Property(property="created_at", type="string", format="date-time"),
+     *             @OA\Property(property="updated_at", type="string", format="date-time")
      *         )
      *     ),
-     *     @OA\Response(response=200, description="Data poli berhasil diperbarui"),
-     *     @OA\Response(response=404, description="Poli tidak ditemukan")
+     *     @OA\Response(
+     *         response=404,
+     *         description="Poli tidak ditemukan"
+     *     )
      * )
      */
     public function update(Request $request, $id)

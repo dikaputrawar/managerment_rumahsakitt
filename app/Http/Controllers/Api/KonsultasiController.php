@@ -182,20 +182,51 @@ class KonsultasiController extends Controller
      *         in="path",
      *         required=true,
      *         description="ID konsultasi yang akan diperbarui",
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="integer", example=1)
      *     ),
-     *     @OA\RequestBody(
+     *     @OA\Parameter(
+     *         name="pasien_id",
+     *         in="query",
      *         required=false,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="pasien_id", type="integer", example=1),
-     *             @OA\Property(property="dokter_id", type="integer", example=2),
-     *             @OA\Property(property="jadwal_id", type="integer", example=3),
-     *             @OA\Property(property="tanggal_konsultasi", type="string", format="date", example="2025-04-30"),
-     *             @OA\Property(property="status", type="string", enum={"Dijadwalkan", "Selesai", "Dibatalkan"}, example="Selesai")
-     *         )
+     *         description="ID pasien",
+     *         @OA\Schema(type="integer", example=1)
      *     ),
-     *     @OA\Response(response=200, description="Konsultasi berhasil diperbarui"),
-     *     @OA\Response(response=404, description="Konsultasi tidak ditemukan")
+     *     @OA\Parameter(
+     *         name="dokter_id",
+     *         in="query",
+     *         required=false,
+     *         description="ID dokter",
+     *         @OA\Schema(type="integer", example=2)
+     *     ),
+     *     @OA\Parameter(
+     *         name="jadwal_id",
+     *         in="query",
+     *         required=false,
+     *         description="ID jadwal dokter",
+     *         @OA\Schema(type="integer", example=3)
+     *     ),
+     *     @OA\Parameter(
+     *         name="tanggal_konsultasi",
+     *         in="query",
+     *         required=false,
+     *         description="Tanggal konsultasi",
+     *         @OA\Schema(type="string", format="date", example="2025-04-30")
+     *     ),
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         required=false,
+     *         description="Status konsultasi",
+     *         @OA\Schema(type="string", enum={"Dijadwalkan", "Selesai", "Dibatalkan"}, example="Selesai")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Konsultasi berhasil diperbarui"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Konsultasi tidak ditemukan"
+     *     )
      * )
      */
     public function update(Request $request, $id)

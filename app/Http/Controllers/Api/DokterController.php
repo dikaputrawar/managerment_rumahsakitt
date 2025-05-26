@@ -77,24 +77,53 @@ class DokterController extends Controller
         ], 200);
     }
 
-    /**
+        /**
      * @OA\Post(
      *     path="/api/dokter",
      *     tags={"Dokter"},
      *     summary="Menambahkan dokter baru",
-     *     @OA\RequestBody(
+     *     @OA\Parameter(
+     *         name="nama",
+     *         in="query",
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nama", "spesialisasi", "no_telepon", "email"},
-     *             @OA\Property(property="nama", type="string"),
-     *             @OA\Property(property="spesialisasi", type="string"),
-     *             @OA\Property(property="no_telepon", type="string"),
-     *             @OA\Property(property="email", type="string")
-     *         )
+     *         description="Nama dokter",
+     *         @OA\Schema(type="string", maxLength=100)
+     *     ),
+     *     @OA\Parameter(
+     *         name="spesialisasi",
+     *         in="query",
+     *         required=true,
+     *         description="Spesialisasi dokter",
+     *         @OA\Schema(type="string", maxLength=100)
+     *     ),
+     *     @OA\Parameter(
+     *         name="no_telepon",
+     *         in="query",
+     *         required=true,
+     *         description="Nomor telepon dokter, harus unik",
+     *         @OA\Schema(type="string", maxLength=20)
+     *     ),
+     *     @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         required=true,
+     *         description="Email dokter, harus unik",
+     *         @OA\Schema(type="string", format="email", maxLength=100)
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Dokter berhasil ditambahkan"
+     *         description="Dokter berhasil ditambahkan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Dokter berhasil ditambahkan"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="nama", type="string", example="Dr. Budi"),
+     *                 @OA\Property(property="spesialisasi", type="string", example="Kardiologi"),
+     *                 @OA\Property(property="no_telepon", type="string", example="08123456789"),
+     *                 @OA\Property(property="email", type="string", example="budi@example.com")
+     *             )
+     *         )
      *     )
      * )
      */
@@ -116,34 +145,68 @@ class DokterController extends Controller
         ], 201);
     }
 
-    /**
+        /**
      * @OA\Put(
      *     path="/api/dokter/{id}",
      *     tags={"Dokter"},
-     *     summary="Memperbarui data dokter",
+     *     summary="Memperbarui data dokter melalui query parameter",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID dokter",
-     *         @OA\Schema(type="integer")
+     *         description="ID dokter yang akan diperbarui",
+     *         @OA\Schema(type="integer", example=1)
      *     ),
-     *     @OA\RequestBody(
-     *         required=true,
+     *     @OA\Parameter(
+     *         name="nama",
+     *         in="query",
+     *         required=false,
+     *         description="Nama dokter",
+     *         @OA\Schema(type="string", example="Dr. Budi")
+     *     ),
+     *     @OA\Parameter(
+     *         name="spesialisasi",
+     *         in="query",
+     *         required=false,
+     *         description="Spesialisasi dokter",
+     *         @OA\Schema(type="string", example="Kardiologi")
+     *     ),
+     *     @OA\Parameter(
+     *         name="no_telepon",
+     *         in="query",
+     *         required=false,
+     *         description="Nomor telepon dokter",
+     *         @OA\Schema(type="string", example="08123456789")
+     *     ),
+     *     @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         required=false,
+     *         description="Email dokter",
+     *         @OA\Schema(type="string", format="email", example="budi@example.com")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Data dokter berhasil diperbarui",
      *         @OA\JsonContent(
-     *             @OA\Property(property="nama", type="string"),
-     *             @OA\Property(property="spesialisasi", type="string"),
-     *             @OA\Property(property="no_telepon", type="string"),
-     *             @OA\Property(property="email", type="string")
+     *             @OA\Property(property="success", type="boolean", example=true),
+     *             @OA\Property(property="message", type="string", example="Data dokter berhasil diperbarui"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="nama", type="string", example="Dr. Budi"),
+     *                 @OA\Property(property="spesialisasi", type="string", example="Kardiologi"),
+     *                 @OA\Property(property="no_telepon", type="string", example="08123456789"),
+     *                 @OA\Property(property="email", type="string", example="budi@example.com")
+     *             )
      *         )
      *     ),
      *     @OA\Response(
-     *         response=200,
-     *         description="Data dokter berhasil diperbarui"
-     *     ),
-     *     @OA\Response(
      *         response=404,
-     *         description="Dokter tidak ditemukan"
+     *         description="Dokter tidak ditemukan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="success", type="boolean", example=false),
+     *             @OA\Property(property="message", type="string", example="Dokter tidak ditemukan")
+     *         )
      *     )
      * )
      */

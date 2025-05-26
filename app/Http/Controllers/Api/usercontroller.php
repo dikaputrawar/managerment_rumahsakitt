@@ -59,24 +59,37 @@ class UserController extends Controller
         ]);
     }
 
-    /**
+        /**
      * @OA\Post(
      *     path="/api/user",
      *     tags={"User"},
      *     summary="Membuat user baru",
-     *     @OA\RequestBody(
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"name", "email", "password"},
-     *             @OA\Property(property="name", type="string", example="Admin"),
-     *             @OA\Property(property="email", type="string", format="email", example="admin@example.com"),
-     *             @OA\Property(property="password", type="string", example="password123")
-     *         )
+     *         description="Nama lengkap user",
+     *         @OA\Schema(type="string", example="Admin")
+     *     ),
+     *     @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         required=true,
+     *         description="Email user",
+     *         @OA\Schema(type="string", format="email", example="admin@example.com")
+     *     ),
+     *     @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         required=true,
+     *         description="Password user (minimal 6 karakter)",
+     *         @OA\Schema(type="string", example="password123")
      *     ),
      *     @OA\Response(response=201, description="User berhasil dibuat"),
      *     @OA\Response(response=400, description="Validasi gagal")
      * )
      */
+
     public function store(Request $request): JsonResponse
     {
         $data = $request->validate([
@@ -96,25 +109,44 @@ class UserController extends Controller
         ], 201);
     }
 
-    /**
+        /**
      * @OA\Put(
      *     path="/api/user/{id}",
      *     tags={"User"},
      *     summary="Memperbarui data user",
      *     @OA\Parameter(
-     *         name="id", in="path", required=true, @OA\Schema(type="integer")
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID user yang akan diperbarui",
+     *         @OA\Schema(type="integer", example=1)
      *     ),
-     *     @OA\RequestBody(
-     *         @OA\JsonContent(
-     *             @OA\Property(property="name", type="string"),
-     *             @OA\Property(property="email", type="string"),
-     *             @OA\Property(property="password", type="string")
-     *         )
+     *     @OA\Parameter(
+     *         name="name",
+     *         in="query",
+     *         required=false,
+     *         description="Nama user",
+     *         @OA\Schema(type="string", example="Admin Baru")
+     *     ),
+     *     @OA\Parameter(
+     *         name="email",
+     *         in="query",
+     *         required=false,
+     *         description="Email user",
+     *         @OA\Schema(type="string", format="email", example="adminbaru@example.com")
+     *     ),
+     *     @OA\Parameter(
+     *         name="password",
+     *         in="query",
+     *         required=false,
+     *         description="Password baru user (minimal 6 karakter)",
+     *         @OA\Schema(type="string", example="newpassword123")
      *     ),
      *     @OA\Response(response=200, description="User berhasil diperbarui"),
      *     @OA\Response(response=404, description="User tidak ditemukan")
      * )
      */
+
     public function update(Request $request, $id): JsonResponse
     {
         $user = User::find($id);

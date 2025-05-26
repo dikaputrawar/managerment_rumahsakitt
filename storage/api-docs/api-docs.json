@@ -304,39 +304,94 @@
                 ],
                 "summary": "Menambahkan dokter baru",
                 "operationId": "0ed4d306239fbc82987eb608fd5b7c32",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "nama",
-                                    "spesialisasi",
-                                    "no_telepon",
-                                    "email"
-                                ],
-                                "properties": {
-                                    "nama": {
-                                        "type": "string"
-                                    },
-                                    "spesialisasi": {
-                                        "type": "string"
-                                    },
-                                    "no_telepon": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "nama",
+                        "in": "query",
+                        "description": "Nama dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "spesialisasi",
+                        "in": "query",
+                        "description": "Spesialisasi dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 100
+                        }
+                    },
+                    {
+                        "name": "no_telepon",
+                        "in": "query",
+                        "description": "Nomor telepon dokter, harus unik",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "maxLength": 20
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email dokter, harus unik",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "maxLength": 100
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
-                        "description": "Dokter berhasil ditambahkan"
+                        "description": "Dokter berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Dokter berhasil ditambahkan"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nama": {
+                                                    "type": "string",
+                                                    "example": "Dr. Budi"
+                                                },
+                                                "spesialisasi": {
+                                                    "type": "string",
+                                                    "example": "Kardiologi"
+                                                },
+                                                "no_telepon": {
+                                                    "type": "string",
+                                                    "example": "08123456789"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "budi@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
@@ -372,49 +427,126 @@
                 "tags": [
                     "Dokter"
                 ],
-                "summary": "Memperbarui data dokter",
+                "summary": "Memperbarui data dokter melalui query parameter",
                 "operationId": "3c37ae6731c0581fcf8b24593d50b40c",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID dokter",
+                        "description": "ID dokter yang akan diperbarui",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "nama",
+                        "in": "query",
+                        "description": "Nama dokter",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Dr. Budi"
+                        }
+                    },
+                    {
+                        "name": "spesialisasi",
+                        "in": "query",
+                        "description": "Spesialisasi dokter",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Kardiologi"
+                        }
+                    },
+                    {
+                        "name": "no_telepon",
+                        "in": "query",
+                        "description": "Nomor telepon dokter",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "08123456789"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email dokter",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "budi@example.com"
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nama": {
-                                        "type": "string"
+                "responses": {
+                    "201": {
+                        "description": "Data dokter berhasil diperbarui",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": true
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data dokter berhasil diperbarui"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nama": {
+                                                    "type": "string",
+                                                    "example": "Dr. Budi"
+                                                },
+                                                "spesialisasi": {
+                                                    "type": "string",
+                                                    "example": "Kardiologi"
+                                                },
+                                                "no_telepon": {
+                                                    "type": "string",
+                                                    "example": "08123456789"
+                                                },
+                                                "email": {
+                                                    "type": "string",
+                                                    "example": "budi@example.com"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
                                     },
-                                    "spesialisasi": {
-                                        "type": "string"
-                                    },
-                                    "no_telepon": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
+                                    "type": "object"
+                                }
                             }
                         }
-                    }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Data dokter berhasil diperbarui"
                     },
                     "404": {
-                        "description": "Dokter tidak ditemukan"
+                        "description": "Dokter tidak ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "success": {
+                                            "type": "boolean",
+                                            "example": false
+                                        },
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Dokter tidak ditemukan"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             },
@@ -1040,48 +1172,67 @@
                         "description": "ID konsultasi yang akan diperbarui",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "pasien_id",
+                        "in": "query",
+                        "description": "ID pasien",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "dokter_id",
+                        "in": "query",
+                        "description": "ID dokter",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "jadwal_id",
+                        "in": "query",
+                        "description": "ID jadwal dokter",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    },
+                    {
+                        "name": "tanggal_konsultasi",
+                        "in": "query",
+                        "description": "Tanggal konsultasi",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-04-30"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status konsultasi",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Dijadwalkan",
+                                "Selesai",
+                                "Dibatalkan"
+                            ],
+                            "example": "Selesai"
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "pasien_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "dokter_id": {
-                                        "type": "integer",
-                                        "example": 2
-                                    },
-                                    "jadwal_id": {
-                                        "type": "integer",
-                                        "example": 3
-                                    },
-                                    "tanggal_konsultasi": {
-                                        "type": "string",
-                                        "format": "date",
-                                        "example": "2025-04-30"
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Dijadwalkan",
-                                            "Selesai",
-                                            "Dibatalkan"
-                                        ],
-                                        "example": "Selesai"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "Konsultasi berhasil diperbarui"
@@ -2000,29 +2151,51 @@
                     "Poli"
                 ],
                 "summary": "Membuat poli baru",
+                "description": "Menambahkan data poli baru melalui parameter query",
                 "operationId": "dc6f5536ac888fffedc93b62b51d384a",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "nama_poli"
-                                ],
-                                "properties": {
-                                    "nama_poli": {
-                                        "type": "string",
-                                        "example": "Poli Gigi"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "nama_poli",
+                        "in": "query",
+                        "description": "Nama poli",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Poli Gigi"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
-                        "description": "Poli berhasil dibuat"
+                        "description": "Poli berhasil dibuat",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nama_poli": {
+                                            "type": "string",
+                                            "example": "Poli Gigi"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Data tidak valid"
                     }
                 }
             }
@@ -2058,36 +2231,58 @@
                     "Poli"
                 ],
                 "summary": "Memperbarui data poli",
+                "description": "Memperbarui nama poli berdasarkan ID",
                 "operationId": "7c97afe797b07f1ad7a9383bb5553963",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID poli yang ingin diperbarui",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "nama_poli",
+                        "in": "query",
+                        "description": "Nama poli baru",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Poli Anak"
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nama_poli": {
-                                        "type": "string",
-                                        "example": "Poli Anak"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
-                        "description": "Data poli berhasil diperbarui"
+                        "description": "Data poli berhasil diperbarui",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "id": {
+                                            "type": "integer",
+                                            "example": 1
+                                        },
+                                        "nama_poli": {
+                                            "type": "string",
+                                            "example": "Poli Anak"
+                                        },
+                                        "created_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        },
+                                        "updated_at": {
+                                            "type": "string",
+                                            "format": "date-time"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     },
                     "404": {
                         "description": "Poli tidak ditemukan"
@@ -2302,36 +2497,39 @@
                 ],
                 "summary": "Membuat user baru",
                 "operationId": "287bc3ec931e652c54bb2ddb777040bc",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "name",
-                                    "email",
-                                    "password"
-                                ],
-                                "properties": {
-                                    "name": {
-                                        "type": "string",
-                                        "example": "Admin"
-                                    },
-                                    "email": {
-                                        "type": "string",
-                                        "format": "email",
-                                        "example": "admin@example.com"
-                                    },
-                                    "password": {
-                                        "type": "string",
-                                        "example": "password123"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nama lengkap user",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Admin"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email user",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "admin@example.com"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password user (minimal 6 karakter)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "password123"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
                         "description": "User berhasil dibuat"
@@ -2378,32 +2576,45 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID user yang akan diperbarui",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Nama user",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Admin Baru"
+                        }
+                    },
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email user",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "adminbaru@example.com"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password baru user (minimal 6 karakter)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "newpassword123"
                         }
                     }
                 ],
-                "requestBody": {
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "name": {
-                                        "type": "string"
-                                    },
-                                    "email": {
-                                        "type": "string"
-                                    },
-                                    "password": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
                         "description": "User berhasil diperbarui"
