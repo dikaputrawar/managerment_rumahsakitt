@@ -44,9 +44,9 @@ class PasienController extends Controller
     /**
      * @OA\Post(
      *     path="/api/pasien",
-     *     operationId="storePasien",
+     *     operationId="createPasien",
      *     tags={"Pasien"},
-     *     summary="Menyimpan data pasien baru",
+     *     summary="Menambahkan data pasien baru",
      *     @OA\Parameter(
      *         name="nama",
      *         in="query",
@@ -75,22 +75,23 @@ class PasienController extends Controller
      *         description="Alamat pasien",
      *         @OA\Schema(type="string")
      *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"nama", "tanggal_lahir", "jenis_kelamin", "alamat"},
-     *             @OA\Property(property="nama", type="string"),
-     *             @OA\Property(property="tanggal_lahir", type="string", format="date"),
-     *             @OA\Property(property="jenis_kelamin", type="string"),
-     *             @OA\Property(property="alamat", type="string")
-     *         )
-     *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Data pasien berhasil disimpan"
+     *         description="Pasien berhasil ditambahkan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Pasien berhasil ditambahkan"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="nama", type="string", example="Budi Santoso"),
+     *                 @OA\Property(property="tanggal_lahir", type="string", format="date", example="1990-05-15"),
+     *                 @OA\Property(property="jenis_kelamin", type="string", example="Laki-laki"),
+     *                 @OA\Property(property="alamat", type="string", example="Jl. Merdeka No. 10")
+     *             )
+     *         )
      *     )
      * )
-     */
+    */
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -110,7 +111,7 @@ class PasienController extends Controller
 
         /**
      * @OA\Put(
-     *     path="/pasien/{id}",
+     *     path="/api/pasien/{id}",
      *     operationId="updatePasien",
      *     tags={"Pasien"},
      *     summary="Memperbarui data pasien",
@@ -118,57 +119,60 @@ class PasienController extends Controller
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID pasien",
-     *         @OA\Schema(type="integer")
+     *         description="ID pasien yang akan diperbarui",
+     *         @OA\Schema(type="integer", example=1)
      *     ),
      *     @OA\Parameter(
      *         name="nama",
      *         in="query",
      *         required=true,
      *         description="Nama pasien",
-     *         @OA\Schema(type="string")
+     *         @OA\Schema(type="string", example="Budi Santoso")
      *     ),
      *     @OA\Parameter(
      *         name="tanggal_lahir",
      *         in="query",
      *         required=true,
      *         description="Tanggal lahir pasien",
-     *         @OA\Schema(type="string", format="date")
+     *         @OA\Schema(type="string", format="date", example="1990-01-01")
      *     ),
      *     @OA\Parameter(
      *         name="jenis_kelamin",
      *         in="query",
      *         required=true,
      *         description="Jenis kelamin pasien",
-     *         @OA\Schema(type="string", enum={"Laki-laki", "Perempuan"})
+     *         @OA\Schema(type="string", enum={"Laki-laki", "Perempuan"}, example="Laki-laki")
      *     ),
      *     @OA\Parameter(
      *         name="alamat",
      *         in="query",
      *         required=true,
      *         description="Alamat pasien",
-     *         @OA\Schema(type="string")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=false,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="nama", type="string"),
-     *             @OA\Property(property="tanggal_lahir", type="string", format="date"),
-     *             @OA\Property(property="jenis_kelamin", type="string"),
-     *             @OA\Property(property="alamat", type="string")
-     *         )
+     *         @OA\Schema(type="string", example="Jl. Merdeka No. 123")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Data pasien berhasil diperbarui"
+     *         description="Data pasien berhasil diperbarui",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Data pasien berhasil diperbarui"),
+     *             @OA\Property(property="data", type="object",
+     *                 @OA\Property(property="id", type="integer", example=1),
+     *                 @OA\Property(property="nama", type="string", example="Budi Santoso"),
+     *                 @OA\Property(property="tanggal_lahir", type="string", format="date", example="1990-01-01"),
+     *                 @OA\Property(property="jenis_kelamin", type="string", example="Laki-laki"),
+     *                 @OA\Property(property="alamat", type="string", example="Jl. Merdeka No. 123")
+     *             )
+     *         )
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Pasien tidak ditemukan"
+     *         description="Pasien tidak ditemukan",
+     *         @OA\JsonContent(
+     *             @OA\Property(property="message", type="string", example="Pasien tidak ditemukan")
+     *         )
      *     )
      * )
      */
-
     public function update(Request $request, $id)
     {
         $pasien = Pasien::find($id);

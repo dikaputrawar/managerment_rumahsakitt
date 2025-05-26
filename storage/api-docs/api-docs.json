@@ -1441,8 +1441,8 @@
                 "tags": [
                     "Pasien"
                 ],
-                "summary": "Menyimpan data pasien baru",
-                "operationId": "storePasien",
+                "summary": "Menambahkan data pasien baru",
+                "operationId": "createPasien",
                 "parameters": [
                     {
                         "name": "nama",
@@ -1486,45 +1486,53 @@
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "nama",
-                                    "tanggal_lahir",
-                                    "jenis_kelamin",
-                                    "alamat"
-                                ],
-                                "properties": {
-                                    "nama": {
-                                        "type": "string"
-                                    },
-                                    "tanggal_lahir": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "jenis_kelamin": {
-                                        "type": "string"
-                                    },
-                                    "alamat": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "201": {
-                        "description": "Data pasien berhasil disimpan"
+                        "description": "Pasien berhasil ditambahkan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pasien berhasil ditambahkan"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nama": {
+                                                    "type": "string",
+                                                    "example": "Budi Santoso"
+                                                },
+                                                "tanggal_lahir": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "1990-05-15"
+                                                },
+                                                "jenis_kelamin": {
+                                                    "type": "string",
+                                                    "example": "Laki-laki"
+                                                },
+                                                "alamat": {
+                                                    "type": "string",
+                                                    "example": "Jl. Merdeka No. 10"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
                     }
                 }
             }
         },
-        "/pasien/{id}": {
+        "/api/pasien/{id}": {
             "put": {
                 "tags": [
                     "Pasien"
@@ -1535,10 +1543,11 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID pasien",
+                        "description": "ID pasien yang akan diperbarui",
                         "required": true,
                         "schema": {
-                            "type": "integer"
+                            "type": "integer",
+                            "example": 1
                         }
                     },
                     {
@@ -1547,7 +1556,8 @@
                         "description": "Nama pasien",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Budi Santoso"
                         }
                     },
                     {
@@ -1557,7 +1567,8 @@
                         "required": true,
                         "schema": {
                             "type": "string",
-                            "format": "date"
+                            "format": "date",
+                            "example": "1990-01-01"
                         }
                     },
                     {
@@ -1570,7 +1581,8 @@
                             "enum": [
                                 "Laki-laki",
                                 "Perempuan"
-                            ]
+                            ],
+                            "example": "Laki-laki"
                         }
                     },
                     {
@@ -1579,44 +1591,74 @@
                         "description": "Alamat pasien",
                         "required": true,
                         "schema": {
-                            "type": "string"
+                            "type": "string",
+                            "example": "Jl. Merdeka No. 123"
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "nama": {
-                                        "type": "string"
+                "responses": {
+                    "200": {
+                        "description": "Data pasien berhasil diperbarui",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Data pasien berhasil diperbarui"
+                                        },
+                                        "data": {
+                                            "properties": {
+                                                "id": {
+                                                    "type": "integer",
+                                                    "example": 1
+                                                },
+                                                "nama": {
+                                                    "type": "string",
+                                                    "example": "Budi Santoso"
+                                                },
+                                                "tanggal_lahir": {
+                                                    "type": "string",
+                                                    "format": "date",
+                                                    "example": "1990-01-01"
+                                                },
+                                                "jenis_kelamin": {
+                                                    "type": "string",
+                                                    "example": "Laki-laki"
+                                                },
+                                                "alamat": {
+                                                    "type": "string",
+                                                    "example": "Jl. Merdeka No. 123"
+                                                }
+                                            },
+                                            "type": "object"
+                                        }
                                     },
-                                    "tanggal_lahir": {
-                                        "type": "string",
-                                        "format": "date"
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "404": {
+                        "description": "Pasien tidak ditemukan",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Pasien tidak ditemukan"
+                                        }
                                     },
-                                    "jenis_kelamin": {
-                                        "type": "string"
-                                    },
-                                    "alamat": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
+                                    "type": "object"
+                                }
                             }
                         }
                     }
-                },
-                "responses": {
-                    "200": {
-                        "description": "Data pasien berhasil diperbarui"
-                    },
-                    "404": {
-                        "description": "Pasien tidak ditemukan"
-                    }
                 }
-            },
+            }
+        },
+        "/pasien/{id}": {
             "delete": {
                 "tags": [
                     "Pasien"
