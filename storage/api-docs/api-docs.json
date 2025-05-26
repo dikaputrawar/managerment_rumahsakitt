@@ -680,6 +680,64 @@
                 ],
                 "summary": "Menyimpan data konsultasi baru",
                 "operationId": "882765e8d04b2f3530f9875e7ced8f1f",
+                "parameters": [
+                    {
+                        "name": "pasien_id",
+                        "in": "query",
+                        "description": "ID pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 1
+                        }
+                    },
+                    {
+                        "name": "dokter_id",
+                        "in": "query",
+                        "description": "ID dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 2
+                        }
+                    },
+                    {
+                        "name": "jadwal_id",
+                        "in": "query",
+                        "description": "ID jadwal dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 3
+                        }
+                    },
+                    {
+                        "name": "tanggal_konsultasi",
+                        "in": "query",
+                        "description": "Tanggal konsultasi",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date",
+                            "example": "2025-04-30"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status konsultasi",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Dijadwalkan",
+                                "Selesai",
+                                "Dibatalkan"
+                            ],
+                            "example": "Dijadwalkan"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1027,6 +1085,49 @@
                 ],
                 "summary": "Menyimpan data pasien baru",
                 "operationId": "storePasien",
+                "parameters": [
+                    {
+                        "name": "nama",
+                        "in": "query",
+                        "description": "Nama pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tanggal_lahir",
+                        "in": "query",
+                        "description": "Tanggal lahir pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "jenis_kelamin",
+                        "in": "query",
+                        "description": "Jenis kelamin pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Laki-laki",
+                                "Perempuan"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "alamat",
+                        "in": "query",
+                        "description": "Alamat pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -1066,31 +1167,6 @@
             }
         },
         "/api/pasien/{id}": {
-            "get": {
-                "tags": [
-                    "Pasien"
-                ],
-                "summary": "Menampilkan detail pasien berdasarkan ID",
-                "operationId": "getDetailPasien",
-                "parameters": [
-                    {
-                        "name": "id",
-                        "in": "path",
-                        "required": true,
-                        "schema": {
-                            "type": "integer"
-                        }
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "Detail pasien ditemukan"
-                    },
-                    "404": {
-                        "description": "Pasien tidak ditemukan"
-                    }
-                }
-            },
             "put": {
                 "tags": [
                     "Pasien"
@@ -1101,23 +1177,59 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID pasien",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
+                    },
+                    {
+                        "name": "nama",
+                        "in": "query",
+                        "description": "Nama pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tanggal_lahir",
+                        "in": "query",
+                        "description": "Tanggal lahir pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "jenis_kelamin",
+                        "in": "query",
+                        "description": "Jenis kelamin pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Laki-laki",
+                                "Perempuan"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "alamat",
+                        "in": "query",
+                        "description": "Alamat pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
                     }
                 ],
                 "requestBody": {
-                    "required": true,
+                    "required": false,
                     "content": {
                         "application/json": {
                             "schema": {
-                                "required": [
-                                    "nama",
-                                    "tanggal_lahir",
-                                    "jenis_kelamin",
-                                    "alamat"
-                                ],
                                 "properties": {
                                     "nama": {
                                         "type": "string"

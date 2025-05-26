@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('pendaftarans', function (Blueprint $table) {
             $table->id();
-            $table->foreignId('pasien_id')->constrained('pasiens');
-            $table->foreignId('poli_id')->constrained('polis');
+            $table->foreignId('pasien_id')->constrained('pasien');
+            $table->foreignId('poli_id')->constrained('poli');
             $table->enum('status_bpjs', ['Ya', 'Tidak']);
             $table->dateTime('waktu_daftar');
             $table->timestamps();

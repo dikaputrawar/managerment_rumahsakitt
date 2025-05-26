@@ -89,11 +89,46 @@ class KonsultasiController extends Controller
         }
     }
 
-    /**
+        /**
      * @OA\Post(
      *     path="/api/konsultasi",
      *     tags={"Konsultasi"},
      *     summary="Menyimpan data konsultasi baru",
+     *     @OA\Parameter(
+     *         name="pasien_id",
+     *         in="query",
+     *         required=true,
+     *         description="ID pasien",
+     *         @OA\Schema(type="integer", example=1)
+     *     ),
+     *     @OA\Parameter(
+     *         name="dokter_id",
+     *         in="query",
+     *         required=true,
+     *         description="ID dokter",
+     *         @OA\Schema(type="integer", example=2)
+     *     ),
+     *     @OA\Parameter(
+     *         name="jadwal_id",
+     *         in="query",
+     *         required=true,
+     *         description="ID jadwal dokter",
+     *         @OA\Schema(type="integer", example=3)
+     *     ),
+     *     @OA\Parameter(
+     *         name="tanggal_konsultasi",
+     *         in="query",
+     *         required=true,
+     *         description="Tanggal konsultasi",
+     *         @OA\Schema(type="string", format="date", example="2025-04-30")
+     *     ),
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         required=true,
+     *         description="Status konsultasi",
+     *         @OA\Schema(type="string", enum={"Dijadwalkan", "Selesai", "Dibatalkan"}, example="Dijadwalkan")
+     *     ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(

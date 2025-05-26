@@ -16,8 +16,8 @@ return new class extends Migration {
             $table->enum('status', ['Pending', 'Paid', 'Cancelled']);
             $table->timestamps();
 
-            $table->foreign('konsultasi_id')
-                ->references('konsultasi_id')
+           $table->foreign('konsultasi_id')
+                ->references('id') // <-- ini!
                 ->on('konsultasi')
                 ->onDelete('cascade');
         });

@@ -7,7 +7,7 @@ use Illuminate\Support\Facades\Schema;
 return new class extends Migration {
     public function up() {
         Schema::create('dokter', function (Blueprint $table) {
-            $table->id('dokter_id'); // Primary key dengan auto-increment
+            $table->id();
             $table->string('nama', 100);
             $table->string('spesialisasi', 100);
             $table->string('no_telepon', 20);

@@ -12,6 +12,9 @@ use App\Http\Controllers\Api\UserController;
 use App\Http\Controllers\Api\InventoryController;  
 use App\Http\Controllers\Api\PaymentController;    
 use App\Http\Controllers\Api\PoliController;
+use App\Http\Controllers\Api\PengambilanObatController;
+use App\Http\Controllers\Api\AntreanController;
+use App\Http\Controllers\Api\PendaftaranController;
 
 Route::apiResource('poli', PoliController::class);
 
