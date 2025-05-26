@@ -34,6 +34,49 @@
                 ],
                 "summary": "Membuat antrean baru",
                 "operationId": "storeAntrean",
+                "parameters": [
+                    {
+                        "name": "nama",
+                        "in": "query",
+                        "description": "Nama pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tanggal_lahir",
+                        "in": "query",
+                        "description": "Tanggal lahir pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "jenis_kelamin",
+                        "in": "query",
+                        "description": "Jenis kelamin pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Laki-laki",
+                                "Perempuan"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "alamat",
+                        "in": "query",
+                        "description": "Alamat pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -47,10 +90,12 @@
                                 ],
                                 "properties": {
                                     "pasien_id": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "nomor_antrean": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "A001"
                                     },
                                     "status": {
                                         "type": "string",
@@ -59,11 +104,13 @@
                                             "dipanggil",
                                             "selesai",
                                             "batal"
-                                        ]
+                                        ],
+                                        "example": "menunggu"
                                     },
                                     "tanggal": {
                                         "type": "string",
-                                        "format": "date"
+                                        "format": "date",
+                                        "example": "2025-05-26"
                                     }
                                 },
                                 "type": "object"
@@ -114,9 +161,51 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID antrean yang akan diperbarui",
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "nama",
+                        "in": "query",
+                        "description": "Nama pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tanggal_lahir",
+                        "in": "query",
+                        "description": "Tanggal lahir pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "jenis_kelamin",
+                        "in": "query",
+                        "description": "Jenis kelamin pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Laki-laki",
+                                "Perempuan"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "alamat",
+                        "in": "query",
+                        "description": "Alamat pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
                         }
                     }
                 ],
@@ -133,10 +222,12 @@
                                 ],
                                 "properties": {
                                     "pasien_id": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "nomor_antrean": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "A002"
                                     },
                                     "status": {
                                         "type": "string",
@@ -145,11 +236,13 @@
                                             "dipanggil",
                                             "selesai",
                                             "batal"
-                                        ]
+                                        ],
+                                        "example": "dipanggil"
                                     },
                                     "tanggal": {
                                         "type": "string",
-                                        "format": "date"
+                                        "format": "date",
+                                        "example": "2025-05-27"
                                     }
                                 },
                                 "type": "object"
@@ -371,6 +464,61 @@
                 ],
                 "summary": "Menyimpan data inventaris obat baru",
                 "operationId": "createInventory",
+                "parameters": [
+                    {
+                        "name": "nama_obat",
+                        "in": "query",
+                        "description": "Nama obat",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kategori",
+                        "in": "query",
+                        "description": "Kategori obat",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Tablet",
+                                "Syrup",
+                                "Capsule",
+                                "Injection"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "stok",
+                        "in": "query",
+                        "description": "Jumlah stok obat",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "harga",
+                        "in": "query",
+                        "description": "Harga obat",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "exp_date",
+                        "in": "query",
+                        "description": "Tanggal kadaluarsa",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    }
+                ],
                 "requestBody": {
                     "required": true,
                     "content": {
@@ -385,7 +533,8 @@
                                 ],
                                 "properties": {
                                     "nama_obat": {
-                                        "type": "string"
+                                        "type": "string",
+                                        "example": "Paracetamol"
                                     },
                                     "kategori": {
                                         "type": "string",
@@ -394,18 +543,22 @@
                                             "Syrup",
                                             "Capsule",
                                             "Injection"
-                                        ]
+                                        ],
+                                        "example": "Tablet"
                                     },
                                     "stok": {
-                                        "type": "integer"
+                                        "type": "integer",
+                                        "example": 100
                                     },
                                     "harga": {
                                         "type": "number",
-                                        "format": "float"
+                                        "format": "float",
+                                        "example": 5000
                                     },
                                     "exp_date": {
                                         "type": "string",
-                                        "format": "date"
+                                        "format": "date",
+                                        "example": "2025-12-31"
                                     }
                                 },
                                 "type": "object"
@@ -456,9 +609,63 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID inventaris",
                         "required": true,
                         "schema": {
                             "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "nama_obat",
+                        "in": "query",
+                        "description": "Nama obat",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "kategori",
+                        "in": "query",
+                        "description": "Kategori obat. Nilai yang tersedia: Tablet, Syrup, Capsule, Injection",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Tablet",
+                                "Syrup",
+                                "Capsule",
+                                "Injection"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "stok",
+                        "in": "query",
+                        "description": "Jumlah stok obat",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "harga",
+                        "in": "query",
+                        "description": "Harga obat",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "exp_date",
+                        "in": "query",
+                        "description": "Tanggal kadaluarsa (format: YYYY-MM-DD)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
                         }
                     }
                 ],
@@ -1166,7 +1373,7 @@
                 }
             }
         },
-        "/api/pasien/{id}": {
+        "/pasien/{id}": {
             "put": {
                 "tags": [
                     "Pasien"

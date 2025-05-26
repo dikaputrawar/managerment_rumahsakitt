@@ -64,22 +64,53 @@ class AntreanController extends Controller
         ], 200);
     }
 
-    /**
+        /**
      * @OA\Post(
      *     path="/api/antrean",
      *     operationId="storeAntrean",
      *     tags={"Antrean"},
      *     summary="Membuat antrean baru",
+     * 
+     *     @OA\Parameter(
+     *         name="nama",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Nama pasien"
+     *     ),
+     *     @OA\Parameter(
+     *         name="tanggal_lahir",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", format="date"),
+     *         description="Tanggal lahir pasien"
+     *     ),
+     *     @OA\Parameter(
+     *         name="jenis_kelamin",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", enum={"Laki-laki", "Perempuan"}),
+     *         description="Jenis kelamin pasien"
+     *     ),
+     *     @OA\Parameter(
+     *         name="alamat",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Alamat pasien"
+     *     ),
+     * 
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"pasien_id", "nomor_antrean", "status", "tanggal"},
-     *             @OA\Property(property="pasien_id", type="integer"),
-     *             @OA\Property(property="nomor_antrean", type="string"),
-     *             @OA\Property(property="status", type="string", enum={"menunggu", "dipanggil", "selesai", "batal"}),
-     *             @OA\Property(property="tanggal", type="string", format="date")
+     *             @OA\Property(property="pasien_id", type="integer", example=1),
+     *             @OA\Property(property="nomor_antrean", type="string", example="A001"),
+     *             @OA\Property(property="status", type="string", enum={"menunggu", "dipanggil", "selesai", "batal"}, example="menunggu"),
+     *             @OA\Property(property="tanggal", type="string", format="date", example="2025-05-26")
      *         )
      *     ),
+     * 
      *     @OA\Response(
      *         response=201,
      *         description="Antrean berhasil dibuat"
@@ -103,28 +134,60 @@ class AntreanController extends Controller
         ], 201);
     }
 
-    /**
+        /**
      * @OA\Put(
      *     path="/api/antrean/{id}",
      *     operationId="updateAntrean",
      *     tags={"Antrean"},
      *     summary="Memperbarui data antrean",
+     * 
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         @OA\Schema(type="integer")
+     *         @OA\Schema(type="integer"),
+     *         description="ID antrean yang akan diperbarui"
      *     ),
+     *     @OA\Parameter(
+     *         name="nama",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Nama pasien"
+     *     ),
+     *     @OA\Parameter(
+     *         name="tanggal_lahir",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", format="date"),
+     *         description="Tanggal lahir pasien"
+     *     ),
+     *     @OA\Parameter(
+     *         name="jenis_kelamin",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", enum={"Laki-laki", "Perempuan"}),
+     *         description="Jenis kelamin pasien"
+     *     ),
+     *     @OA\Parameter(
+     *         name="alamat",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Alamat pasien"
+     *     ),
+     * 
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"pasien_id", "nomor_antrean", "status", "tanggal"},
-     *             @OA\Property(property="pasien_id", type="integer"),
-     *             @OA\Property(property="nomor_antrean", type="string"),
-     *             @OA\Property(property="status", type="string", enum={"menunggu", "dipanggil", "selesai", "batal"}),
-     *             @OA\Property(property="tanggal", type="string", format="date")
+     *             @OA\Property(property="pasien_id", type="integer", example=1),
+     *             @OA\Property(property="nomor_antrean", type="string", example="A002"),
+     *             @OA\Property(property="status", type="string", enum={"menunggu", "dipanggil", "selesai", "batal"}, example="dipanggil"),
+     *             @OA\Property(property="tanggal", type="string", format="date", example="2025-05-27")
      *         )
      *     ),
+     * 
      *     @OA\Response(
      *         response=200,
      *         description="Antrean berhasil diperbarui"
@@ -135,6 +198,7 @@ class AntreanController extends Controller
      *     )
      * )
      */
+
     public function update(Request $request, $id)
     {
         $antrean = Antrean::find($id);

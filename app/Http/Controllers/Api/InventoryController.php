@@ -76,23 +76,62 @@ class InventoryController extends Controller
      *     operationId="createInventory",
      *     tags={"Inventory"},
      *     summary="Menyimpan data inventaris obat baru",
+     *
+     *     @OA\Parameter(
+     *         name="nama_obat",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string"),
+     *         description="Nama obat"
+     *     ),
+     *     @OA\Parameter(
+     *         name="kategori",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", enum={"Tablet", "Syrup", "Capsule", "Injection"}),
+     *         description="Kategori obat"
+     *     ),
+     *     @OA\Parameter(
+     *         name="stok",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="integer"),
+     *         description="Jumlah stok obat"
+     *     ),
+     *     @OA\Parameter(
+     *         name="harga",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="number", format="float"),
+     *         description="Harga obat"
+     *     ),
+     *     @OA\Parameter(
+     *         name="exp_date",
+     *         in="query",
+     *         required=true,
+     *         @OA\Schema(type="string", format="date"),
+     *         description="Tanggal kadaluarsa"
+     *     ),
+     *
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
      *             required={"nama_obat","kategori","stok","harga","exp_date"},
-     *             @OA\Property(property="nama_obat", type="string"),
-     *             @OA\Property(property="kategori", type="string", enum={"Tablet", "Syrup", "Capsule", "Injection"}),
-     *             @OA\Property(property="stok", type="integer"),
-     *             @OA\Property(property="harga", type="number", format="float"),
-     *             @OA\Property(property="exp_date", type="string", format="date")
+     *             @OA\Property(property="nama_obat", type="string", example="Paracetamol"),
+     *             @OA\Property(property="kategori", type="string", enum={"Tablet", "Syrup", "Capsule", "Injection"}, example="Tablet"),
+     *             @OA\Property(property="stok", type="integer", example=100),
+     *             @OA\Property(property="harga", type="number", format="float", example=5000),
+     *             @OA\Property(property="exp_date", type="string", format="date", example="2025-12-31")
      *         )
      *     ),
+     *
      *     @OA\Response(
      *         response=201,
      *         description="Data inventaris berhasil disimpan"
      *     )
      * )
      */
+
     public function store(Request $request)
     {
         $data = $request->validate([
@@ -108,7 +147,7 @@ class InventoryController extends Controller
         return response()->json(['message' => 'Data inventaris berhasil disimpan', 'data' => $inventory], 201);
     }
 
-    /**
+        /**
      * @OA\Put(
      *     path="/api/inventory/{id}",
      *     operationId="updateInventory",
@@ -118,12 +157,49 @@ class InventoryController extends Controller
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID inventaris",
      *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="nama_obat",
+     *         in="query",
+     *         required=false,
+     *         description="Nama obat",
+     *         @OA\Schema(type="string")
+     *     ),
+     *     @OA\Parameter(
+     *         name="kategori",
+     *         in="query",
+     *         required=false,
+     *         description="Kategori obat. Nilai yang tersedia: Tablet, Syrup, Capsule, Injection",
+     *         @OA\Schema(type="string", enum={"Tablet", "Syrup", "Capsule", "Injection"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="stok",
+     *         in="query",
+     *         required=false,
+     *         description="Jumlah stok obat",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="harga",
+     *         in="query",
+     *         required=false,
+     *         description="Harga obat",
+     *         @OA\Schema(type="number", format="float")
+     *     ),
+     *     @OA\Parameter(
+     *         name="exp_date",
+     *         in="query",
+     *         required=false,
+     *         description="Tanggal kadaluarsa (format: YYYY-MM-DD)",
+     *         @OA\Schema(type="string", format="date")
      *     ),
      *     @OA\Response(response=200, description="Data inventaris berhasil diperbarui"),
      *     @OA\Response(response=404, description="Inventaris tidak ditemukan")
      * )
      */
+
     public function update(Request $request, $id)
     {
         $inventory = Inventory::find($id);
