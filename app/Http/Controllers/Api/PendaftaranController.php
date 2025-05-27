@@ -17,7 +17,6 @@ class PendaftaranController extends Controller
     /**
      * @OA\Get(
      *     path="/api/pendaftaran",
-     *     operationId="getPendaftaran",
      *     tags={"Pendaftaran"},
      *     summary="Menampilkan semua data pendaftaran",
      *     @OA\Response(
@@ -28,17 +27,12 @@ class PendaftaranController extends Controller
      */
     public function index()
     {
-        $data = Pendaftaran::all();
-        return response()->json([
-            'message' => 'Data semua pendaftaran',
-            'data' => $data
-        ], 200);
+        return response()->json(Pendaftaran::all());
     }
 
     /**
      * @OA\Get(
      *     path="/api/pendaftaran/{id}",
-     *     operationId="getDetailPendaftaran",
      *     tags={"Pendaftaran"},
      *     summary="Menampilkan detail pendaftaran berdasarkan ID",
      *     @OA\Parameter(
@@ -61,32 +55,44 @@ class PendaftaranController extends Controller
     {
         $data = Pendaftaran::find($id);
         if (!$data) {
-            return response()->json([
-                'message' => 'Pendaftaran tidak ditemukan'
-            ], 404);
+            return response()->json(['message' => 'Pendaftaran tidak ditemukan'], 404);
         }
 
-        return response()->json([
-            'message' => 'Detail pendaftaran',
-            'data' => $data
-        ], 200);
+        return response()->json($data);
     }
 
     /**
      * @OA\Post(
      *     path="/api/pendaftaran",
-     *     operationId="storePendaftaran",
      *     tags={"Pendaftaran"},
      *     summary="Menyimpan data pendaftaran baru",
-     *     @OA\RequestBody(
+     *     @OA\Parameter(
+     *         name="pasien_id",
+     *         in="query",
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"pasien_id","poli_id","status_bpjs","waktu_daftar"},
-     *             @OA\Property(property="pasien_id", type="integer"),
-     *             @OA\Property(property="poli_id", type="integer"),
-     *             @OA\Property(property="status_bpjs", type="string", enum={"Ya","Tidak"}),
-     *             @OA\Property(property="waktu_daftar", type="string", format="date-time")
-     *         )
+     *         description="ID pasien",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="poli_id",
+     *         in="query",
+     *         required=true,
+     *         description="ID poli",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="status_bpjs",
+     *         in="query",
+     *         required=true,
+     *         description="Status BPJS",
+     *         @OA\Schema(type="string", enum={"Ya", "Tidak"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="waktu_daftar",
+     *         in="query",
+     *         required=true,
+     *         description="Waktu daftar (format: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", format="date-time", example="2025-05-21T10:00:00")
      *     ),
      *     @OA\Response(
      *         response=201,
@@ -100,46 +106,57 @@ class PendaftaranController extends Controller
             'pasien_id' => 'required|exists:pasiens,id',
             'poli_id' => 'required|exists:polis,id',
             'status_bpjs' => 'required|in:Ya,Tidak',
-            'waktu_daftar' => 'required|date_format:Y-m-d\TH:i:sP', // ISO 8601
+            'waktu_daftar' => 'required|date_format:Y-m-d\TH:i:s',
         ]);
 
         $pendaftaran = Pendaftaran::create($data);
 
-        return response()->json([
-            'message' => 'Data pendaftaran berhasil disimpan',
-            'data' => $pendaftaran
-        ], 201);
+        return response()->json($pendaftaran, 201);
     }
 
     /**
      * @OA\Put(
      *     path="/api/pendaftaran/{id}",
-     *     operationId="updatePendaftaran",
      *     tags={"Pendaftaran"},
      *     summary="Memperbarui data pendaftaran",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID pendaftaran",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"pasien_id","poli_id","status_bpjs","waktu_daftar"},
-     *             @OA\Property(property="pasien_id", type="integer"),
-     *             @OA\Property(property="poli_id", type="integer"),
-     *             @OA\Property(property="status_bpjs", type="string", enum={"Ya","Tidak"}),
-     *             @OA\Property(property="waktu_daftar", type="string", format="date-time")
-     *         )
+     *     @OA\Parameter(
+     *         name="pasien_id",
+     *         in="query",
+     *         required=false,
+     *         description="ID pasien",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="poli_id",
+     *         in="query",
+     *         required=false,
+     *         description="ID poli",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="status_bpjs",
+     *         in="query",
+     *         required=false,
+     *         description="Status BPJS",
+     *         @OA\Schema(type="string", enum={"Ya", "Tidak"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="waktu_daftar",
+     *         in="query",
+     *         required=false,
+     *         description="Waktu daftar (format: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", format="date-time", example="2025-05-21T10:00:00")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Data pendaftaran berhasil diperbarui"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Pendaftaran tidak ditemukan"
      *     )
      * )
      */
@@ -147,30 +164,24 @@ class PendaftaranController extends Controller
     {
         $pendaftaran = Pendaftaran::find($id);
         if (!$pendaftaran) {
-            return response()->json([
-                'message' => 'Pendaftaran tidak ditemukan'
-            ], 404);
+            return response()->json(['message' => 'Pendaftaran tidak ditemukan'], 404);
         }
 
         $data = $request->validate([
-            'pasien_id' => 'required|exists:pasiens,id',
-            'poli_id' => 'required|exists:polis,id',
-            'status_bpjs' => 'required|in:Ya,Tidak',
-            'waktu_daftar' => 'required|date_format:Y-m-d\TH:i:sP',
+            'pasien_id' => 'sometimes|exists:pasiens,id',
+            'poli_id' => 'sometimes|exists:polis,id',
+            'status_bpjs' => 'sometimes|in:Ya,Tidak',
+            'waktu_daftar' => 'sometimes|date_format:Y-m-d\TH:i:s',
         ]);
 
         $pendaftaran->update($data);
 
-        return response()->json([
-            'message' => 'Data pendaftaran berhasil diperbarui',
-            'data' => $pendaftaran
-        ], 200);
+        return response()->json($pendaftaran);
     }
 
     /**
      * @OA\Delete(
      *     path="/api/pendaftaran/{id}",
-     *     operationId="deletePendaftaran",
      *     tags={"Pendaftaran"},
      *     summary="Menghapus data pendaftaran",
      *     @OA\Parameter(
@@ -193,16 +204,11 @@ class PendaftaranController extends Controller
     {
         $pendaftaran = Pendaftaran::find($id);
         if (!$pendaftaran) {
-            return response()->json([
-                'message' => 'Pendaftaran tidak ditemukan'
-            ], 404);
+            return response()->json(['message' => 'Pendaftaran tidak ditemukan'], 404);
         }
 
         $pendaftaran->delete();
 
-        return response()->json([
-            'message' => 'Pendaftaran berhasil dihapus',
-            'deleted_id' => $id
-        ], 200);
+        return response()->json(['message' => 'Pendaftaran berhasil dihapus']);
     }
 }

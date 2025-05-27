@@ -35,14 +35,26 @@ class LaporanController extends Controller
      *     path="/api/laporan",
      *     tags={"Laporan"},
      *     summary="Menyimpan data laporan baru",
-     *     @OA\RequestBody(
+     *     @OA\Parameter(
+     *         name="periode",
+     *         in="query",
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"periode", "jumlah_pasien", "pendapatan"},
-     *             @OA\Property(property="periode", type="string", example="Januari 2025"),
-     *             @OA\Property(property="jumlah_pasien", type="integer", example=100),
-     *             @OA\Property(property="pendapatan", type="number", format="float", example=15000000)
-     *         )
+     *         description="Periode laporan",
+     *         @OA\Schema(type="string", example="Januari 2025")
+     *     ),
+     *     @OA\Parameter(
+     *         name="jumlah_pasien",
+     *         in="query",
+     *         required=true,
+     *         description="Jumlah pasien",
+     *         @OA\Schema(type="integer", example=100)
+     *     ),
+     *     @OA\Parameter(
+     *         name="pendapatan",
+     *         in="query",
+     *         required=true,
+     *         description="Pendapatan",
+     *         @OA\Schema(type="number", format="float", example=15000000)
      *     ),
      *     @OA\Response(
      *         response=201,
@@ -58,7 +70,7 @@ class LaporanController extends Controller
             'pendapatan' => 'required|numeric'
         ]);
 
-        $laporan = Laporan::create($request->all());
+        $laporan = Laporan::create($request->only(['periode', 'jumlah_pasien', 'pendapatan']));
         return response()->json($laporan, 201);
     }
 
@@ -101,13 +113,26 @@ class LaporanController extends Controller
      *         description="ID laporan",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\RequestBody(
+     *     @OA\Parameter(
+     *         name="periode",
+     *         in="query",
      *         required=false,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="periode", type="string", example="Februari 2025"),
-     *             @OA\Property(property="jumlah_pasien", type="integer", example=120),
-     *             @OA\Property(property="pendapatan", type="number", format="float", example=17000000)
-     *         )
+     *         description="Periode laporan",
+     *         @OA\Schema(type="string", example="Februari 2025")
+     *     ),
+     *     @OA\Parameter(
+     *         name="jumlah_pasien",
+     *         in="query",
+     *         required=false,
+     *         description="Jumlah pasien",
+     *         @OA\Schema(type="integer", example=120)
+     *     ),
+     *     @OA\Parameter(
+     *         name="pendapatan",
+     *         in="query",
+     *         required=false,
+     *         description="Pendapatan",
+     *         @OA\Schema(type="number", format="float", example=17000000)
      *     ),
      *     @OA\Response(
      *         response=200,
@@ -118,7 +143,7 @@ class LaporanController extends Controller
     public function update(Request $request, $id)
     {
         $laporan = Laporan::findOrFail($id);
-        $laporan->update($request->all());
+        $laporan->update($request->only(['periode', 'jumlah_pasien', 'pendapatan']));
         return response()->json($laporan);
     }
 

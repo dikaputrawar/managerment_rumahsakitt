@@ -1288,36 +1288,39 @@
                 ],
                 "summary": "Menyimpan data laporan baru",
                 "operationId": "d97fa4e1a3072819b633afae97511b2e",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "periode",
-                                    "jumlah_pasien",
-                                    "pendapatan"
-                                ],
-                                "properties": {
-                                    "periode": {
-                                        "type": "string",
-                                        "example": "Januari 2025"
-                                    },
-                                    "jumlah_pasien": {
-                                        "type": "integer",
-                                        "example": 100
-                                    },
-                                    "pendapatan": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 15000000
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "periode",
+                        "in": "query",
+                        "description": "Periode laporan",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "example": "Januari 2025"
+                        }
+                    },
+                    {
+                        "name": "jumlah_pasien",
+                        "in": "query",
+                        "description": "Jumlah pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "integer",
+                            "example": 100
+                        }
+                    },
+                    {
+                        "name": "pendapatan",
+                        "in": "query",
+                        "description": "Pendapatan",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 15000000
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
                         "description": "Data laporan berhasil disimpan"
@@ -1367,33 +1370,39 @@
                         "schema": {
                             "type": "integer"
                         }
-                    }
-                ],
-                "requestBody": {
-                    "required": false,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "periode": {
-                                        "type": "string",
-                                        "example": "Februari 2025"
-                                    },
-                                    "jumlah_pasien": {
-                                        "type": "integer",
-                                        "example": 120
-                                    },
-                                    "pendapatan": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 17000000
-                                    }
-                                },
-                                "type": "object"
-                            }
+                    },
+                    {
+                        "name": "periode",
+                        "in": "query",
+                        "description": "Periode laporan",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "example": "Februari 2025"
+                        }
+                    },
+                    {
+                        "name": "jumlah_pasien",
+                        "in": "query",
+                        "description": "Jumlah pasien",
+                        "required": false,
+                        "schema": {
+                            "type": "integer",
+                            "example": 120
+                        }
+                    },
+                    {
+                        "name": "pendapatan",
+                        "in": "query",
+                        "description": "Pendapatan",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float",
+                            "example": 17000000
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Data laporan berhasil diperbarui"
@@ -1834,7 +1843,7 @@
                     "Pendaftaran"
                 ],
                 "summary": "Menampilkan semua data pendaftaran",
-                "operationId": "getPendaftaran",
+                "operationId": "79b44847ba89b758b7d4ccf1826628bd",
                 "responses": {
                     "200": {
                         "description": "Berhasil mendapatkan data pendaftaran"
@@ -1846,42 +1855,51 @@
                     "Pendaftaran"
                 ],
                 "summary": "Menyimpan data pendaftaran baru",
-                "operationId": "storePendaftaran",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "pasien_id",
-                                    "poli_id",
-                                    "status_bpjs",
-                                    "waktu_daftar"
-                                ],
-                                "properties": {
-                                    "pasien_id": {
-                                        "type": "integer"
-                                    },
-                                    "poli_id": {
-                                        "type": "integer"
-                                    },
-                                    "status_bpjs": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Ya",
-                                            "Tidak"
-                                        ]
-                                    },
-                                    "waktu_daftar": {
-                                        "type": "string",
-                                        "format": "date-time"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "operationId": "c9c1ac52f5579de30fc305f7a0908421",
+                "parameters": [
+                    {
+                        "name": "pasien_id",
+                        "in": "query",
+                        "description": "ID pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "poli_id",
+                        "in": "query",
+                        "description": "ID poli",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "status_bpjs",
+                        "in": "query",
+                        "description": "Status BPJS",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Ya",
+                                "Tidak"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "waktu_daftar",
+                        "in": "query",
+                        "description": "Waktu daftar (format: Y-m-d H:i:s)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-05-21T10:00:00"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
                         "description": "Data pendaftaran berhasil disimpan"
@@ -1895,7 +1913,7 @@
                     "Pendaftaran"
                 ],
                 "summary": "Menampilkan detail pendaftaran berdasarkan ID",
-                "operationId": "getDetailPendaftaran",
+                "operationId": "9c8d0d5f4bff4f709151654b74f13bce",
                 "parameters": [
                     {
                         "name": "id",
@@ -1920,58 +1938,63 @@
                     "Pendaftaran"
                 ],
                 "summary": "Memperbarui data pendaftaran",
-                "operationId": "updatePendaftaran",
+                "operationId": "6fec343d9f45ded326294e194a8aa3ad",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID pendaftaran",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "pasien_id",
-                                    "poli_id",
-                                    "status_bpjs",
-                                    "waktu_daftar"
-                                ],
-                                "properties": {
-                                    "pasien_id": {
-                                        "type": "integer"
-                                    },
-                                    "poli_id": {
-                                        "type": "integer"
-                                    },
-                                    "status_bpjs": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Ya",
-                                            "Tidak"
-                                        ]
-                                    },
-                                    "waktu_daftar": {
-                                        "type": "string",
-                                        "format": "date-time"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                    },
+                    {
+                        "name": "pasien_id",
+                        "in": "query",
+                        "description": "ID pasien",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "poli_id",
+                        "in": "query",
+                        "description": "ID poli",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "status_bpjs",
+                        "in": "query",
+                        "description": "Status BPJS",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Ya",
+                                "Tidak"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "waktu_daftar",
+                        "in": "query",
+                        "description": "Waktu daftar (format: Y-m-d H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-05-21T10:00:00"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Data pendaftaran berhasil diperbarui"
-                    },
-                    "404": {
-                        "description": "Pendaftaran tidak ditemukan"
                     }
                 }
             },
@@ -1980,7 +2003,7 @@
                     "Pendaftaran"
                 ],
                 "summary": "Menghapus data pendaftaran",
-                "operationId": "deletePendaftaran",
+                "operationId": "e5aa2fb7d2f3d1a4cadcdfc1d65f981c",
                 "parameters": [
                     {
                         "name": "id",
@@ -2374,43 +2397,66 @@
                 "tags": [
                     "Rekam Medis"
                 ],
-                "summary": "Membuat data rekam medis baru",
+                "summary": "Membuat data rekam medis baru (via parameter)",
                 "operationId": "8d3b0bd074c34f9296f940f677b94169",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "pasien_id",
-                                    "tanggal_kunjungan",
-                                    "diagnosis",
-                                    "tindakan",
-                                    "obat"
-                                ],
-                                "properties": {
-                                    "pasien_id": {
-                                        "type": "integer"
-                                    },
-                                    "tanggal_kunjungan": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "diagnosis": {
-                                        "type": "string"
-                                    },
-                                    "tindakan": {
-                                        "type": "string"
-                                    },
-                                    "obat": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
+                "parameters": [
+                    {
+                        "name": "pasien_id",
+                        "in": "query",
+                        "description": "ID pasien",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        },
+                        "example": 1
+                    },
+                    {
+                        "name": "tanggal_kunjungan",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        },
+                        "example": "2025-05-21"
+                    },
+                    {
+                        "name": "diagnosis",
+                        "in": "query",
+                        "required": true,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Demam"
+                    },
+                    {
+                        "name": "tindakan",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Pemberian obat"
+                    },
+                    {
+                        "name": "obat",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Paracetamol"
+                    },
+                    {
+                        "name": "catatan",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        },
+                        "example": "Kontrol 3 hari"
                     }
-                },
+                ],
                 "responses": {
                     "201": {
                         "description": "Rekam medis berhasil dibuat"
@@ -2423,13 +2469,12 @@
                 "tags": [
                     "Rekam Medis"
                 ],
-                "summary": "Menampilkan detail rekam medis",
+                "summary": "Menampilkan detail rekam medis berdasarkan ID",
                 "operationId": "2c1b5e363c3cfd3d97ad0eda55e76886",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID rekam medis",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2455,44 +2500,67 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID rekam medis",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "pasien_id": {
-                                        "type": "integer"
-                                    },
-                                    "tanggal_kunjungan": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "diagnosis": {
-                                        "type": "string"
-                                    },
-                                    "tindakan": {
-                                        "type": "string"
-                                    },
-                                    "obat": {
-                                        "type": "string"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                    },
+                    {
+                        "name": "pasien_id",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tanggal_kunjungan",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date"
+                        }
+                    },
+                    {
+                        "name": "diagnosis",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "tindakan",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "obat",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
+                        }
+                    },
+                    {
+                        "name": "catatan",
+                        "in": "query",
+                        "required": false,
+                        "schema": {
+                            "type": "string"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Data rekam medis berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Rekam medis tidak ditemukan"
                     }
                 }
             },
@@ -2506,7 +2574,6 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID rekam medis",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2516,6 +2583,9 @@
                 "responses": {
                     "200": {
                         "description": "Rekam medis berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Rekam medis tidak ditemukan"
                     }
                 }
             }
@@ -2731,10 +2801,6 @@
             "description": "Manajemen data poli"
         },
         {
-            "name": "Rekam Medis",
-            "description": "Manajemen data rekam medis pasien"
-        },
-        {
             "name": "User",
             "description": "Manajemen data pengguna sistem"
         },
@@ -2745,6 +2811,10 @@
         {
             "name": "Pasien",
             "description": "Pasien"
+        },
+        {
+            "name": "Rekam Medis",
+            "description": "Rekam Medis"
         }
     ]
 }

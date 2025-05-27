@@ -1,4 +1,4 @@
-<?php 
+<?php
 
 namespace App\Http\Controllers\Api;
 
@@ -6,41 +6,37 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\RekamMedis;
 
-/**
- * @OA\Tag(
- *     name="Rekam Medis",
- *     description="Manajemen data rekam medis pasien"
- * )
- */
 class RekamMedisController extends Controller
 {
     /**
-     * @OA\Get(
-     *     path="/api/rekam-medis",
-     *     tags={"Rekam Medis"},
-     *     summary="Menampilkan semua rekam medis",
-     *     @OA\Response(
-     *         response=200,
-     *         description="Berhasil menampilkan semua rekam medis"
-     *     )
-     * )
-     */
-    public function index() 
+ * @OA\Get(
+ *     path="/api/rekam-medis",
+ *     tags={"Rekam Medis"},
+ *     summary="Menampilkan semua rekam medis",
+ *     @OA\Response(
+ *         response=200,
+ *         description="Berhasil menampilkan semua rekam medis"
+ *     )
+ * )
+ */
+    public function index()
     {
         $rekamMedis = RekamMedis::with('pasien')->get();
-        return response()->json($rekamMedis);
+        return response()->json([
+            'message' => 'Data semua rekam medis',
+            'data' => $rekamMedis
+        ], 200);
     }
 
     /**
      * @OA\Get(
      *     path="/api/rekam-medis/{id}",
      *     tags={"Rekam Medis"},
-     *     summary="Menampilkan detail rekam medis",
+     *     summary="Menampilkan detail rekam medis berdasarkan ID",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID rekam medis",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
@@ -53,117 +49,195 @@ class RekamMedisController extends Controller
      *     )
      * )
      */
-    public function show($id) 
+    public function show($id)
     {
         $rekamMedis = RekamMedis::with('pasien')->find($id);
         if (!$rekamMedis) {
             return response()->json(['message' => 'Rekam medis tidak ditemukan'], 404);
         }
-        return response()->json($rekamMedis);
+        return response()->json([
+            'message' => 'Detail rekam medis',
+            'data' => $rekamMedis
+        ], 200);
     }
 
     /**
-     * @OA\Post(
-     *     path="/api/rekam-medis",
-     *     tags={"Rekam Medis"},
-     *     summary="Membuat data rekam medis baru",
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             required={"pasien_id", "tanggal_kunjungan", "diagnosis", "tindakan", "obat"},
-     *             @OA\Property(property="pasien_id", type="integer"),
-     *             @OA\Property(property="tanggal_kunjungan", type="string", format="date"),
-     *             @OA\Property(property="diagnosis", type="string"),
-     *             @OA\Property(property="tindakan", type="string"),
-     *             @OA\Property(property="obat", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=201,
-     *         description="Rekam medis berhasil dibuat"
-     *     )
-     * )
-     */
-    public function store(Request $request) 
+ * @OA\Post(
+ *     path="/api/rekam-medis",
+ *     summary="Membuat data rekam medis baru (via parameter)",
+ *     tags={"Rekam Medis"},
+ *     @OA\Parameter(
+ *         name="pasien_id",
+ *         in="query",
+ *         required=true,
+ *         @OA\Schema(type="integer"),
+ *         description="ID pasien",
+ *         example=1
+ *     ),
+ *     @OA\Parameter(
+ *         name="tanggal_kunjungan",
+ *         in="query",
+ *         required=true,
+ *         @OA\Schema(type="string", format="date"),
+ *         example="2025-05-21"
+ *     ),
+ *     @OA\Parameter(
+ *         name="diagnosis",
+ *         in="query",
+ *         required=true,
+ *         @OA\Schema(type="string"),
+ *         example="Demam"
+ *     ),
+ *     @OA\Parameter(
+ *         name="tindakan",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string"),
+ *         example="Pemberian obat"
+ *     ),
+ *     @OA\Parameter(
+ *         name="obat",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string"),
+ *         example="Paracetamol"
+ *     ),
+ *     @OA\Parameter(
+ *         name="catatan",
+ *         in="query",
+ *         required=false,
+ *         @OA\Schema(type="string"),
+ *         example="Kontrol 3 hari"
+ *     ),
+ *     @OA\Response(
+ *         response=201,
+ *         description="Rekam medis berhasil dibuat"
+ *     )
+ * )
+ */
+
+    public function store(Request $request)
     {
-        $request->validate([
-            'pasien_id' => 'required|exists:pasien,pasien_id',
+        $data = $request->validate([
+            'pasien_id' => 'required|exists:pasien,id',
             'tanggal_kunjungan' => 'required|date',
             'diagnosis' => 'required|string',
             'tindakan' => 'required|string',
             'obat' => 'required|string',
+            'catatan' => 'nullable|string',
         ]);
 
-        $rekamMedis = RekamMedis::create($request->all());
-        return response()->json($rekamMedis, 201);
+        $rekamMedis = RekamMedis::create($data);
+
+        return response()->json([
+            'message' => 'Rekam medis berhasil disimpan',
+            'data' => $rekamMedis
+        ], 201);
     }
 
     /**
-     * @OA\Put(
-     *     path="/api/rekam-medis/{id}",
-     *     tags={"Rekam Medis"},
-     *     summary="Memperbarui data rekam medis",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID rekam medis",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="pasien_id", type="integer"),
-     *             @OA\Property(property="tanggal_kunjungan", type="string", format="date"),
-     *             @OA\Property(property="diagnosis", type="string"),
-     *             @OA\Property(property="tindakan", type="string"),
-     *             @OA\Property(property="obat", type="string")
-     *         )
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Data rekam medis berhasil diperbarui"
-     *     )
-     * )
-     */
-    public function update(Request $request, $id) 
+ * @OA\Put(
+ *     path="/api/rekam-medis/{id}",
+ *     tags={"Rekam Medis"},
+ *     summary="Memperbarui data rekam medis",
+ *     @OA\Parameter(
+ *       name="id",
+ *       in="path",
+ *       required=true, 
+ *       @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *       name="pasien_id", 
+ *       in="query", 
+ *       required=false, 
+ *       @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Parameter(
+ *       name="tanggal_kunjungan", 
+ *       in="query", 
+ *       required=false, 
+ *       @OA\Schema(type="string", format="date")
+ *     ),
+ *     @OA\Parameter(
+ *       name="diagnosis", 
+ *       in="query", 
+ *       required=false, 
+ *       @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *       name="tindakan", 
+ *       in="query", 
+ *       required=false, 
+ *       @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *       name="obat", 
+ *       in="query", 
+ *       required=false, 
+ *       @OA\Schema(type="string")
+ *     ),
+ *     @OA\Parameter(
+ *       name="catatan", 
+ *       in="query", 
+ *       required=false, 
+ *       @OA\Schema(type="string")
+ *     ),
+ *     @OA\Response(
+ *       response=200, 
+ *       description="Data rekam medis berhasil diperbarui")
+ *     ,
+ *     @OA\Response(
+ *       response=404, 
+ *       description="Rekam medis tidak ditemukan")
+ * )
+ */
+
+    public function update(Request $request, $id)
     {
         $rekamMedis = RekamMedis::find($id);
         if (!$rekamMedis) {
             return response()->json(['message' => 'Rekam medis tidak ditemukan'], 404);
         }
 
-        $request->validate([
-            'pasien_id' => 'sometimes|required|exists:pasien,pasien_id',
+        $data = $request->validate([
+            'pasien_id' => 'sometimes|required|exists:pasien,id',
             'tanggal_kunjungan' => 'sometimes|required|date',
             'diagnosis' => 'sometimes|required|string',
             'tindakan' => 'sometimes|required|string',
             'obat' => 'sometimes|required|string',
+            'catatan' => 'nullable|string',
         ]);
 
-        $rekamMedis->update($request->all());
-        return response()->json($rekamMedis);
+        $rekamMedis->update($data);
+
+        return response()->json([
+            'message' => 'Rekam medis berhasil diperbarui',
+            'data' => $rekamMedis
+        ], 200);
     }
 
     /**
-     * @OA\Delete(
-     *     path="/api/rekam-medis/{id}",
-     *     tags={"Rekam Medis"},
-     *     summary="Menghapus data rekam medis",
-     *     @OA\Parameter(
-     *         name="id",
-     *         in="path",
-     *         required=true,
-     *         description="ID rekam medis",
-     *         @OA\Schema(type="integer")
-     *     ),
-     *     @OA\Response(
-     *         response=200,
-     *         description="Rekam medis berhasil dihapus"
-     *     )
-     * )
-     */
-    public function destroy($id) 
+ * @OA\Delete(
+ *     path="/api/rekam-medis/{id}",
+ *     tags={"Rekam Medis"},
+ *     summary="Menghapus data rekam medis",
+ *     @OA\Parameter(
+ *       name="id", 
+ *       in="path", 
+ *       required=true, 
+ *       @OA\Schema(type="integer")
+ *     ),
+ *     @OA\Response(
+ *       response=200, 
+ *       description="Rekam medis berhasil dihapus")
+ *     ,
+ *     @OA\Response(
+ *       response=404, 
+ *       description="Rekam medis tidak ditemukan")
+ * )
+ */
+
+    public function destroy($id)
     {
         $rekamMedis = RekamMedis::find($id);
         if (!$rekamMedis) {
@@ -171,6 +245,10 @@ class RekamMedisController extends Controller
         }
 
         $rekamMedis->delete();
-        return response()->json(['message' => 'Rekam medis berhasil dihapus']);
+
+        return response()->json([
+            'message' => 'Rekam medis berhasil dihapus',
+            'deleted_id' => $id
+        ], 200);
     }
 }
