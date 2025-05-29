@@ -41,7 +41,13 @@ class PengambilanObatController extends Controller
      *     operationId="getPengambilanObatById",
      *     tags={"Pengambilan Obat"},
      *     summary="Menampilkan detail pengambilan obat",
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID dari data pengambilan obat",
+     *         @OA\Schema(type="integer")
+     *     ),
      *     @OA\Response(response=200, description="Data ditemukan"),
      *     @OA\Response(response=404, description="Data tidak ditemukan")
      * )
@@ -109,7 +115,13 @@ class PengambilanObatController extends Controller
      *     operationId="updatePengambilanObat",
      *     tags={"Pengambilan Obat"},
      *     summary="Memperbarui data pengambilan obat",
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID dari data yang ingin diperbarui",
+     *         @OA\Schema(type="integer")
+     *     ),
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
@@ -158,7 +170,13 @@ class PengambilanObatController extends Controller
      *     operationId="deletePengambilanObat",
      *     tags={"Pengambilan Obat"},
      *     summary="Menghapus data pengambilan obat",
-     *     @OA\Parameter(name="id", in="path", required=true, @OA\Schema(type="integer")),
+     *     @OA\Parameter(
+     *         name="id",
+     *         in="path",
+     *         required=true,
+     *         description="ID dari data yang ingin dihapus",
+     *         @OA\Schema(type="integer")
+     *     ),
      *     @OA\Response(response=200, description="Data berhasil dihapus"),
      *     @OA\Response(response=404, description="Data tidak ditemukan")
      * )

@@ -6,14 +6,13 @@ use Illuminate\Http\Request;
 use App\Models\JadwalDokter;
 use App\Http\Controllers\Controller;
 
-
 /**
  * @OA\Tag(
  *     name="Jadwal Dokter",
  *     description="Manajemen data jadwal dokter"
  * )
  */
-class JadwalDokterController extends controller
+class JadwalDokterController extends Controller
 {
     /**
      * @OA\Get(
@@ -87,10 +86,10 @@ class JadwalDokterController extends controller
      *         required=true,
      *         @OA\JsonContent(
      *             required={"dokter_id", "hari", "jam_mulai", "jam_selesai"},
-     *             @OA\Property(property="dokter_id", type="integer"),
-     *             @OA\Property(property="hari", type="string"),
-     *             @OA\Property(property="jam_mulai", type="string", format="time"),
-     *             @OA\Property(property="jam_selesai", type="string", format="time")
+     *             @OA\Property(property="dokter_id", type="integer", example=1, description="ID dokter"),
+     *             @OA\Property(property="hari", type="string", example="Senin", description="Hari jadwal"),
+     *             @OA\Property(property="jam_mulai", type="string", format="time", example="08:00", description="Jam mulai"),
+     *             @OA\Property(property="jam_selesai", type="string", format="time", example="12:00", description="Jam selesai")
      *         )
      *     ),
      *     @OA\Response(
@@ -102,10 +101,10 @@ class JadwalDokterController extends controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'dokter_id' => 'required',
-            'hari' => 'required|string',
-            'jam_mulai' => 'required|string',
-            'jam_selesai' => 'required|string',
+            'dokter_id' => 'required|exists:dokters,id',
+            'hari' => 'required|string|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'jam_mulai' => 'required|date_format:H:i',
+            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
         ]);
 
         $jadwal = JadwalDokter::create($validated);
@@ -132,10 +131,10 @@ class JadwalDokterController extends controller
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             @OA\Property(property="dokter_id", type="integer"),
-     *             @OA\Property(property="hari", type="string"),
-     *             @OA\Property(property="jam_mulai", type="string", format="time"),
-     *             @OA\Property(property="jam_selesai", type="string", format="time")
+     *             @OA\Property(property="dokter_id", type="integer", example=1, description="ID dokter"),
+     *             @OA\Property(property="hari", type="string", example="Selasa", description="Hari jadwal"),
+     *             @OA\Property(property="jam_mulai", type="string", format="time", example="09:00", description="Jam mulai"),
+     *             @OA\Property(property="jam_selesai", type="string", format="time", example="13:00", description="Jam selesai")
      *         )
      *     ),
      *     @OA\Response(
@@ -161,21 +160,13 @@ class JadwalDokterController extends controller
         }
 
         $validated = $request->validate([
-            'dokter_id' => 'sometimes|required|exists:dokters,dokter_id',
+            'dokter_id' => 'sometimes|required|exists:dokters,id',
             'hari' => 'sometimes|required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
             'jam_mulai' => 'sometimes|required|date_format:H:i',
             'jam_selesai' => 'sometimes|required|date_format:H:i|after:jam_mulai',
         ]);
 
-        try {
-            $jadwal->update($validated);
-        } catch (\Exception $e) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Gagal memperbarui jadwal',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        $jadwal->update($validated);
 
         return response()->json([
             'success' => true,

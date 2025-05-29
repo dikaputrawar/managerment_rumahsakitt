@@ -868,18 +868,26 @@
                                 ],
                                 "properties": {
                                     "dokter_id": {
-                                        "type": "integer"
+                                        "description": "ID dokter",
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "hari": {
-                                        "type": "string"
+                                        "description": "Hari jadwal",
+                                        "type": "string",
+                                        "example": "Senin"
                                     },
                                     "jam_mulai": {
+                                        "description": "Jam mulai",
                                         "type": "string",
-                                        "format": "time"
+                                        "format": "time",
+                                        "example": "08:00"
                                     },
                                     "jam_selesai": {
+                                        "description": "Jam selesai",
                                         "type": "string",
-                                        "format": "time"
+                                        "format": "time",
+                                        "example": "12:00"
                                     }
                                 },
                                 "type": "object"
@@ -945,18 +953,26 @@
                             "schema": {
                                 "properties": {
                                     "dokter_id": {
-                                        "type": "integer"
+                                        "description": "ID dokter",
+                                        "type": "integer",
+                                        "example": 1
                                     },
                                     "hari": {
-                                        "type": "string"
+                                        "description": "Hari jadwal",
+                                        "type": "string",
+                                        "example": "Selasa"
                                     },
                                     "jam_mulai": {
+                                        "description": "Jam mulai",
                                         "type": "string",
-                                        "format": "time"
+                                        "format": "time",
+                                        "example": "09:00"
                                     },
                                     "jam_selesai": {
+                                        "description": "Jam selesai",
                                         "type": "string",
-                                        "format": "time"
+                                        "format": "time",
+                                        "example": "13:00"
                                     }
                                 },
                                 "type": "object"
@@ -1694,64 +1710,53 @@
                 }
             }
         },
-        "/api/payments": {
+        "/api/payment": {
             "get": {
                 "tags": [
-                    "Payments"
+                    "Payment"
                 ],
-                "summary": "Menampilkan daftar semua pembayaran",
-                "operationId": "getPayments",
+                "summary": "Menampilkan semua pembayaran",
+                "operationId": "5f2ec8c665b1297d41921876457d7240",
                 "responses": {
                     "200": {
-                        "description": "Berhasil mendapatkan daftar pembayaran"
+                        "description": "Daftar pembayaran berhasil diambil"
                     }
                 }
             },
             "post": {
                 "tags": [
-                    "Payments"
+                    "Payment"
                 ],
-                "summary": "Menyimpan data pembayaran baru",
-                "operationId": "storePayment",
+                "summary": "Menambahkan pembayaran baru",
+                "operationId": "f7d830f2a2d1e5860fd8851213e6bacb",
                 "requestBody": {
                     "required": true,
                     "content": {
                         "application/json": {
                             "schema": {
                                 "required": [
-                                    "konsultasi_id",
-                                    "amount",
-                                    "payment_date",
-                                    "method",
+                                    "user_id",
+                                    "jumlah",
+                                    "metode",
                                     "status"
                                 ],
                                 "properties": {
-                                    "konsultasi_id": {
-                                        "type": "integer"
+                                    "user_id": {
+                                        "type": "integer",
+                                        "example": 1
                                     },
-                                    "amount": {
+                                    "jumlah": {
                                         "type": "number",
-                                        "format": "float"
+                                        "format": "float",
+                                        "example": 50000
                                     },
-                                    "payment_date": {
+                                    "metode": {
                                         "type": "string",
-                                        "format": "date"
-                                    },
-                                    "method": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Cash",
-                                            "Credit Card",
-                                            "Transfer"
-                                        ]
+                                        "example": "Transfer Bank"
                                     },
                                     "status": {
                                         "type": "string",
-                                        "enum": [
-                                            "Pending",
-                                            "Paid",
-                                            "Cancelled"
-                                        ]
+                                        "example": "Sukses"
                                     }
                                 },
                                 "type": "object"
@@ -1761,22 +1766,23 @@
                 },
                 "responses": {
                     "201": {
-                        "description": "Pembayaran berhasil disimpan"
+                        "description": "Pembayaran berhasil ditambahkan"
                     }
                 }
             }
         },
-        "/api/payments/{id}": {
+        "/api/payment/{id}": {
             "get": {
                 "tags": [
-                    "Payments"
+                    "Payment"
                 ],
-                "summary": "Menampilkan detail pembayaran berdasarkan ID",
-                "operationId": "getPaymentDetail",
+                "summary": "Menampilkan detail pembayaran",
+                "operationId": "347320cade5774c56d0a2c7d8bb5df9a",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID pembayaran",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1785,7 +1791,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Detail pembayaran ditemukan"
+                        "description": "Data pembayaran berhasil diambil"
                     },
                     "404": {
                         "description": "Pembayaran tidak ditemukan"
@@ -1794,36 +1800,65 @@
             },
             "put": {
                 "tags": [
-                    "Payments"
+                    "Payment"
                 ],
                 "summary": "Memperbarui data pembayaran",
-                "operationId": "updatePayment",
+                "operationId": "d6a22f76df487e259124c264e08d3054",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID pembayaran",
                         "required": true,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "properties": {
+                                    "jumlah": {
+                                        "type": "number",
+                                        "example": 75000
+                                    },
+                                    "metode": {
+                                        "type": "string",
+                                        "example": "E-Wallet"
+                                    },
+                                    "status": {
+                                        "type": "string",
+                                        "example": "Sukses"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
                 "responses": {
                     "200": {
-                        "description": "Pembayaran berhasil diperbarui"
+                        "description": "Data pembayaran berhasil diperbarui"
+                    },
+                    "404": {
+                        "description": "Pembayaran tidak ditemukan"
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "Payments"
+                    "Payment"
                 ],
-                "summary": "Menghapus data pembayaran",
-                "operationId": "deletePayment",
+                "summary": "Menghapus pembayaran",
+                "operationId": "ee598d511286273d9eb3694eed7437b4",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID pembayaran",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1833,6 +1868,9 @@
                 "responses": {
                     "200": {
                         "description": "Pembayaran berhasil dihapus"
+                    },
+                    "404": {
+                        "description": "Pembayaran tidak ditemukan"
                     }
                 }
             }
@@ -2100,6 +2138,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID dari data pengambilan obat",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2125,6 +2164,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID dari data yang ingin diperbarui",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2182,6 +2222,7 @@
                     {
                         "name": "id",
                         "in": "path",
+                        "description": "ID dari data yang ingin dihapus",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2785,7 +2826,7 @@
             "description": "API untuk laporan klinik"
         },
         {
-            "name": "Payments",
+            "name": "Payment",
             "description": "Manajemen data pembayaran"
         },
         {

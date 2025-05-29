@@ -2,14 +2,13 @@
 
 namespace App\Http\Controllers\Api;
 
-use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Payment;
-use Illuminate\Http\JsonResponse;
+use App\Http\Controllers\Controller;
 
 /**
  * @OA\Tag(
- *     name="Payments",
+ *     name="Payment",
  *     description="Manajemen data pembayaran"
  * )
  */
@@ -17,41 +16,41 @@ class PaymentController extends Controller
 {
     /**
      * @OA\Get(
-     *     path="/api/payments",
-     *     operationId="getPayments",
-     *     tags={"Payments"},
-     *     summary="Menampilkan daftar semua pembayaran",
+     *     path="/api/payment",
+     *     tags={"Payment"},
+     *     summary="Menampilkan semua pembayaran",
      *     @OA\Response(
      *         response=200,
-     *         description="Berhasil mendapatkan daftar pembayaran"
+     *         description="Daftar pembayaran berhasil diambil"
      *     )
      * )
      */
-    public function index(): JsonResponse
+    public function index()
     {
         $payments = Payment::all();
+
         return response()->json([
             'success' => true,
-            'message' => 'Daftar semua pembayaran',
+            'message' => 'Daftar pembayaran berhasil diambil',
             'data' => $payments
         ], 200);
     }
 
     /**
      * @OA\Get(
-     *     path="/api/payments/{id}",
-     *     operationId="getPaymentDetail",
-     *     tags={"Payments"},
-     *     summary="Menampilkan detail pembayaran berdasarkan ID",
+     *     path="/api/payment/{id}",
+     *     tags={"Payment"},
+     *     summary="Menampilkan detail pembayaran",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID pembayaran",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Detail pembayaran ditemukan"
+     *         description="Data pembayaran berhasil diambil"
      *     ),
      *     @OA\Response(
      *         response=404,
@@ -59,79 +58,95 @@ class PaymentController extends Controller
      *     )
      * )
      */
-    public function show(int $id): JsonResponse
+    public function show($id)
     {
         $payment = Payment::find($id);
 
         if (!$payment) {
             return response()->json([
                 'success' => false,
-                'message' => 'Pembayaran tidak ditemukan'
+                'message' => 'Pembayaran tidak ditemukan',
+                'data' => null
             ], 404);
         }
 
         return response()->json([
             'success' => true,
-            'message' => 'Detail pembayaran',
+            'message' => 'Data pembayaran berhasil diambil',
             'data' => $payment
         ], 200);
     }
 
     /**
      * @OA\Post(
-     *     path="/api/payments",
-     *     operationId="storePayment",
-     *     tags={"Payments"},
-     *     summary="Menyimpan data pembayaran baru",
+     *     path="/api/payment",
+     *     tags={"Payment"},
+     *     summary="Menambahkan pembayaran baru",
      *     @OA\RequestBody(
      *         required=true,
      *         @OA\JsonContent(
-     *             required={"konsultasi_id", "amount", "payment_date", "method", "status"},
-     *             @OA\Property(property="konsultasi_id", type="integer"),
-     *             @OA\Property(property="amount", type="number", format="float"),
-     *             @OA\Property(property="payment_date", type="string", format="date"),
-     *             @OA\Property(property="method", type="string", enum={"Cash", "Credit Card", "Transfer"}),
-     *             @OA\Property(property="status", type="string", enum={"Pending", "Paid", "Cancelled"})
+     *             required={"user_id", "jumlah", "metode", "status"},
+     *             @OA\Property(property="user_id", type="integer", example=1),
+     *             @OA\Property(property="jumlah", type="number", format="float", example=50000),
+     *             @OA\Property(property="metode", type="string", example="Transfer Bank"),
+     *             @OA\Property(property="status", type="string", example="Sukses")
      *         )
      *     ),
-     *     @OA\Response(response=201, description="Pembayaran berhasil disimpan")
+     *     @OA\Response(
+     *         response=201,
+     *         description="Pembayaran berhasil ditambahkan"
+     *     )
      * )
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
-        $data = $request->validate([
-            'konsultasi_id' => 'required|exists:konsultasi,konsultasi_id',
-            'amount' => 'required|numeric',
-            'payment_date' => 'required|date',
-            'method' => 'required|in:Cash,Credit Card,Transfer',
-            'status' => 'required|in:Pending,Paid,Cancelled',
+        $validated = $request->validate([
+            'user_id' => 'required|integer|exists:users,id',
+            'jumlah' => 'required|numeric|min:0',
+            'metode' => 'required|string|max:100',
+            'status' => 'required|string|in:Pending,Sukses,Gagal',
         ]);
 
-        $payment = Payment::create($data);
+        $payment = Payment::create($validated);
 
         return response()->json([
             'success' => true,
-            'message' => 'Pembayaran berhasil disimpan',
+            'message' => 'Pembayaran berhasil ditambahkan',
             'data' => $payment
         ], 201);
     }
 
     /**
      * @OA\Put(
-     *     path="/api/payments/{id}",
-     *     operationId="updatePayment",
-     *     tags={"Payments"},
+     *     path="/api/payment/{id}",
+     *     tags={"Payment"},
      *     summary="Memperbarui data pembayaran",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID pembayaran",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="Pembayaran berhasil diperbarui")
+     *     @OA\RequestBody(
+     *         required=true,
+     *         @OA\JsonContent(
+     *             @OA\Property(property="jumlah", type="number", example=75000),
+     *             @OA\Property(property="metode", type="string", example="E-Wallet"),
+     *             @OA\Property(property="status", type="string", example="Sukses")
+     *         )
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data pembayaran berhasil diperbarui"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pembayaran tidak ditemukan"
+     *     )
      * )
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, $id)
     {
         $payment = Payment::find($id);
 
@@ -143,11 +158,9 @@ class PaymentController extends Controller
         }
 
         $data = $request->validate([
-            'konsultasi_id' => 'sometimes|exists:konsultasi,konsultasi_id',
-            'amount' => 'sometimes|numeric',
-            'payment_date' => 'sometimes|date',
-            'method' => 'sometimes|in:Cash,Credit Card,Transfer',
-            'status' => 'sometimes|in:Pending,Paid,Cancelled',
+            'jumlah' => 'sometimes|required|numeric|min:0',
+            'metode' => 'sometimes|required|string|max:100',
+            'status' => 'sometimes|required|string|in:Pending,Sukses,Gagal',
         ]);
 
         $payment->update($data);
@@ -161,20 +174,27 @@ class PaymentController extends Controller
 
     /**
      * @OA\Delete(
-     *     path="/api/payments/{id}",
-     *     operationId="deletePayment",
-     *     tags={"Payments"},
-     *     summary="Menghapus data pembayaran",
+     *     path="/api/payment/{id}",
+     *     tags={"Payment"},
+     *     summary="Menghapus pembayaran",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
+     *         description="ID pembayaran",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="Pembayaran berhasil dihapus")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Pembayaran berhasil dihapus"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pembayaran tidak ditemukan"
+     *     )
      * )
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy($id)
     {
         $payment = Payment::find($id);
 
@@ -189,8 +209,7 @@ class PaymentController extends Controller
 
         return response()->json([
             'success' => true,
-            'message' => 'Pembayaran berhasil dihapus',
-            'deleted_id' => $id
+            'message' => 'Pembayaran berhasil dihapus'
         ], 200);
     }
 }
