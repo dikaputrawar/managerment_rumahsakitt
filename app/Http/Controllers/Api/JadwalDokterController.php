@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers\Api;
 
+use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\JadwalDokter;
-use App\Http\Controllers\Controller;
 
 /**
  * @OA\Tag(
- *     name="Jadwal Dokter",
- *     description="Manajemen data jadwal dokter"
+ *     name="JadwalDokter",
+ *     description="Manajemen jadwal dokter"
  * )
  */
 class JadwalDokterController extends Controller
@@ -17,109 +17,115 @@ class JadwalDokterController extends Controller
     /**
      * @OA\Get(
      *     path="/api/jadwal-dokter",
-     *     tags={"Jadwal Dokter"},
+     *     tags={"JadwalDokter"},
      *     summary="Menampilkan semua jadwal dokter",
      *     @OA\Response(
      *         response=200,
-     *         description="Daftar jadwal dokter berhasil diambil"
+     *         description="Berhasil mendapatkan jadwal dokter"
      *     )
      * )
      */
     public function index()
     {
-        $jadwal = JadwalDokter::with('dokter')->get();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Daftar jadwal dokter berhasil diambil',
-            'data' => $jadwal
-        ], 200);
+        return response()->json(JadwalDokter::all());
     }
 
     /**
      * @OA\Get(
      *     path="/api/jadwal-dokter/{id}",
-     *     tags={"Jadwal Dokter"},
-     *     summary="Menampilkan detail jadwal dokter",
+     *     tags={"JadwalDokter"},
+     *     summary="Menampilkan detail jadwal dokter berdasarkan ID",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID jadwal dokter",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
      *         response=200,
-     *         description="Data jadwal dokter berhasil diambil"
+     *         description="Detail jadwal dokter ditemukan"
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Jadwal tidak ditemukan"
+     *         description="Jadwal dokter tidak ditemukan"
      *     )
      * )
      */
     public function show($id)
     {
-        $jadwal = JadwalDokter::with('dokter')->find($id);
-
-        if (!$jadwal) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Jadwal tidak ditemukan',
-                'data' => null
-            ], 404);
+        $data = JadwalDokter::find($id);
+        if (!$data) {
+            return response()->json(['message' => 'Jadwal dokter tidak ditemukan'], 404);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data jadwal dokter berhasil diambil',
-            'data' => $jadwal
-        ], 200);
+        return response()->json($data);
     }
 
     /**
      * @OA\Post(
      *     path="/api/jadwal-dokter",
-     *     tags={"Jadwal Dokter"},
-     *     summary="Membuat jadwal dokter baru",
-     *     @OA\RequestBody(
+     *     tags={"JadwalDokter"},
+     *     summary="Menyimpan jadwal dokter baru",
+     *     @OA\Parameter(
+     *         name="dokter_id",
+     *         in="query",
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"dokter_id", "hari", "jam_mulai", "jam_selesai"},
-     *             @OA\Property(property="dokter_id", type="integer", example=1, description="ID dokter"),
-     *             @OA\Property(property="hari", type="string", example="Senin", description="Hari jadwal"),
-     *             @OA\Property(property="jam_mulai", type="string", format="time", example="08:00", description="Jam mulai"),
-     *             @OA\Property(property="jam_selesai", type="string", format="time", example="12:00", description="Jam selesai")
-     *         )
+     *         description="ID dokter",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="poli_id",
+     *         in="query",
+     *         required=true,
+     *         description="ID poli",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="hari",
+     *         in="query",
+     *         required=true,
+     *         description="Hari praktek",
+     *         @OA\Schema(type="string", enum={"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="jam_mulai",
+     *         in="query",
+     *         required=true,
+     *         description="Jam mulai praktek (format: H:i:s)",
+     *         @OA\Schema(type="string", format="time", example="08:00:00")
+     *     ),
+     *     @OA\Parameter(
+     *         name="jam_selesai",
+     *         in="query",
+     *         required=true,
+     *         description="Jam selesai praktek (format: H:i:s)",
+     *         @OA\Schema(type="string", format="time", example="16:00:00")
      *     ),
      *     @OA\Response(
      *         response=201,
-     *         description="Jadwal dokter berhasil ditambahkan"
+     *         description="Jadwal dokter berhasil disimpan"
      *     )
      * )
      */
     public function store(Request $request)
     {
-        $validated = $request->validate([
+        $data = $request->validate([
             'dokter_id' => 'required|exists:dokters,id',
-            'hari' => 'required|string|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
-            'jam_mulai' => 'required|date_format:H:i',
-            'jam_selesai' => 'required|date_format:H:i|after:jam_mulai',
+            'poli_id' => 'required|exists:polis,id',
+            'hari' => 'required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'jam_mulai' => 'required|date_format:H:i:s',
+            'jam_selesai' => 'required|date_format:H:i:s',
         ]);
 
-        $jadwal = JadwalDokter::create($validated);
+        $jadwal = JadwalDokter::create($data);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Jadwal dokter berhasil ditambahkan',
-            'data' => $jadwal
-        ], 201);
+        return response()->json($jadwal, 201);
     }
 
     /**
      * @OA\Put(
      *     path="/api/jadwal-dokter/{id}",
-     *     tags={"Jadwal Dokter"},
+     *     tags={"JadwalDokter"},
      *     summary="Memperbarui jadwal dokter",
      *     @OA\Parameter(
      *         name="id",
@@ -128,63 +134,76 @@ class JadwalDokterController extends Controller
      *         description="ID jadwal dokter",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="dokter_id", type="integer", example=1, description="ID dokter"),
-     *             @OA\Property(property="hari", type="string", example="Selasa", description="Hari jadwal"),
-     *             @OA\Property(property="jam_mulai", type="string", format="time", example="09:00", description="Jam mulai"),
-     *             @OA\Property(property="jam_selesai", type="string", format="time", example="13:00", description="Jam selesai")
-     *         )
+     *     @OA\Parameter(
+     *         name="dokter_id",
+     *         in="query",
+     *         required=false,
+     *         description="ID dokter",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="poli_id",
+     *         in="query",
+     *         required=false,
+     *         description="ID poli",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Parameter(
+     *         name="hari",
+     *         in="query",
+     *         required=false,
+     *         description="Hari praktek",
+     *         @OA\Schema(type="string", enum={"Senin", "Selasa", "Rabu", "Kamis", "Jumat", "Sabtu", "Minggu"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="jam_mulai",
+     *         in="query",
+     *         required=false,
+     *         description="Jam mulai praktek (format: H:i:s)",
+     *         @OA\Schema(type="string", format="time", example="08:00:00")
+     *     ),
+     *     @OA\Parameter(
+     *         name="jam_selesai",
+     *         in="query",
+     *         required=false,
+     *         description="Jam selesai praktek (format: H:i:s)",
+     *         @OA\Schema(type="string", format="time", example="16:00:00")
      *     ),
      *     @OA\Response(
      *         response=200,
      *         description="Jadwal dokter berhasil diperbarui"
-     *     ),
-     *     @OA\Response(
-     *         response=404,
-     *         description="Jadwal tidak ditemukan"
      *     )
      * )
      */
     public function update(Request $request, $id)
     {
         $jadwal = JadwalDokter::find($id);
-
         if (!$jadwal) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Jadwal tidak ditemukan',
-                'data' => null
-            ], 404);
+            return response()->json(['message' => 'Jadwal dokter tidak ditemukan'], 404);
         }
 
-        $validated = $request->validate([
-            'dokter_id' => 'sometimes|required|exists:dokters,id',
-            'hari' => 'sometimes|required|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
-            'jam_mulai' => 'sometimes|required|date_format:H:i',
-            'jam_selesai' => 'sometimes|required|date_format:H:i|after:jam_mulai',
+        $data = $request->validate([
+            'dokter_id' => 'sometimes|exists:dokters,id',
+            'poli_id' => 'sometimes|exists:polis,id',
+            'hari' => 'sometimes|in:Senin,Selasa,Rabu,Kamis,Jumat,Sabtu,Minggu',
+            'jam_mulai' => 'sometimes|date_format:H:i:s',
+            'jam_selesai' => 'sometimes|date_format:H:i:s',
         ]);
 
-        $jadwal->update($validated);
+        $jadwal->update($data);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Jadwal dokter berhasil diperbarui',
-            'data' => $jadwal
-        ], 200);
+        return response()->json($jadwal);
     }
 
     /**
      * @OA\Delete(
      *     path="/api/jadwal-dokter/{id}",
-     *     tags={"Jadwal Dokter"},
+     *     tags={"JadwalDokter"},
      *     summary="Menghapus jadwal dokter",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID jadwal dokter",
      *         @OA\Schema(type="integer")
      *     ),
      *     @OA\Response(
@@ -193,27 +212,19 @@ class JadwalDokterController extends Controller
      *     ),
      *     @OA\Response(
      *         response=404,
-     *         description="Jadwal tidak ditemukan"
+     *         description="Jadwal dokter tidak ditemukan"
      *     )
      * )
      */
     public function destroy($id)
     {
         $jadwal = JadwalDokter::find($id);
-
         if (!$jadwal) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Jadwal tidak ditemukan',
-                'data' => null
-            ], 404);
+            return response()->json(['message' => 'Jadwal dokter tidak ditemukan'], 404);
         }
 
         $jadwal->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Jadwal dokter berhasil dihapus'
-        ], 200);
+        return response()->json(['message' => 'Jadwal dokter berhasil dihapus']);
     }
 }

@@ -839,65 +839,85 @@
         "/api/jadwal-dokter": {
             "get": {
                 "tags": [
-                    "Jadwal Dokter"
+                    "JadwalDokter"
                 ],
                 "summary": "Menampilkan semua jadwal dokter",
                 "operationId": "88efb88118193568d552a36ff1a185d8",
                 "responses": {
                     "200": {
-                        "description": "Daftar jadwal dokter berhasil diambil"
+                        "description": "Berhasil mendapatkan jadwal dokter"
                     }
                 }
             },
             "post": {
                 "tags": [
-                    "Jadwal Dokter"
+                    "JadwalDokter"
                 ],
-                "summary": "Membuat jadwal dokter baru",
+                "summary": "Menyimpan jadwal dokter baru",
                 "operationId": "8392d8c177faced7a2591549dc083969",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "dokter_id",
-                                    "hari",
-                                    "jam_mulai",
-                                    "jam_selesai"
-                                ],
-                                "properties": {
-                                    "dokter_id": {
-                                        "description": "ID dokter",
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "hari": {
-                                        "description": "Hari jadwal",
-                                        "type": "string",
-                                        "example": "Senin"
-                                    },
-                                    "jam_mulai": {
-                                        "description": "Jam mulai",
-                                        "type": "string",
-                                        "format": "time",
-                                        "example": "08:00"
-                                    },
-                                    "jam_selesai": {
-                                        "description": "Jam selesai",
-                                        "type": "string",
-                                        "format": "time",
-                                        "example": "12:00"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "dokter_id",
+                        "in": "query",
+                        "description": "ID dokter",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "poli_id",
+                        "in": "query",
+                        "description": "ID poli",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hari",
+                        "in": "query",
+                        "description": "Hari praktek",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Senin",
+                                "Selasa",
+                                "Rabu",
+                                "Kamis",
+                                "Jumat",
+                                "Sabtu",
+                                "Minggu"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "jam_mulai",
+                        "in": "query",
+                        "description": "Jam mulai praktek (format: H:i:s)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "time",
+                            "example": "08:00:00"
+                        }
+                    },
+                    {
+                        "name": "jam_selesai",
+                        "in": "query",
+                        "description": "Jam selesai praktek (format: H:i:s)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "time",
+                            "example": "16:00:00"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
-                        "description": "Jadwal dokter berhasil ditambahkan"
+                        "description": "Jadwal dokter berhasil disimpan"
                     }
                 }
             }
@@ -905,15 +925,14 @@
         "/api/jadwal-dokter/{id}": {
             "get": {
                 "tags": [
-                    "Jadwal Dokter"
+                    "JadwalDokter"
                 ],
-                "summary": "Menampilkan detail jadwal dokter",
+                "summary": "Menampilkan detail jadwal dokter berdasarkan ID",
                 "operationId": "e647942c91a6bc0220eb5d4c5ac6696e",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID jadwal dokter",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -922,16 +941,16 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Data jadwal dokter berhasil diambil"
+                        "description": "Detail jadwal dokter ditemukan"
                     },
                     "404": {
-                        "description": "Jadwal tidak ditemukan"
+                        "description": "Jadwal dokter tidak ditemukan"
                     }
                 }
             },
             "put": {
                 "tags": [
-                    "Jadwal Dokter"
+                    "JadwalDokter"
                 ],
                 "summary": "Memperbarui jadwal dokter",
                 "operationId": "71aab38e1e0e050ea01cf3bad1cdcfc8",
@@ -944,54 +963,75 @@
                         "schema": {
                             "type": "integer"
                         }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "dokter_id": {
-                                        "description": "ID dokter",
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "hari": {
-                                        "description": "Hari jadwal",
-                                        "type": "string",
-                                        "example": "Selasa"
-                                    },
-                                    "jam_mulai": {
-                                        "description": "Jam mulai",
-                                        "type": "string",
-                                        "format": "time",
-                                        "example": "09:00"
-                                    },
-                                    "jam_selesai": {
-                                        "description": "Jam selesai",
-                                        "type": "string",
-                                        "format": "time",
-                                        "example": "13:00"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                    },
+                    {
+                        "name": "dokter_id",
+                        "in": "query",
+                        "description": "ID dokter",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "poli_id",
+                        "in": "query",
+                        "description": "ID poli",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "hari",
+                        "in": "query",
+                        "description": "Hari praktek",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Senin",
+                                "Selasa",
+                                "Rabu",
+                                "Kamis",
+                                "Jumat",
+                                "Sabtu",
+                                "Minggu"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "jam_mulai",
+                        "in": "query",
+                        "description": "Jam mulai praktek (format: H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "time",
+                            "example": "08:00:00"
+                        }
+                    },
+                    {
+                        "name": "jam_selesai",
+                        "in": "query",
+                        "description": "Jam selesai praktek (format: H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "time",
+                            "example": "16:00:00"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Jadwal dokter berhasil diperbarui"
-                    },
-                    "404": {
-                        "description": "Jadwal tidak ditemukan"
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "Jadwal Dokter"
+                    "JadwalDokter"
                 ],
                 "summary": "Menghapus jadwal dokter",
                 "operationId": "63e01e26c224023aeb9bbd3e608e3a95",
@@ -999,7 +1039,6 @@
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID jadwal dokter",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1011,7 +1050,7 @@
                         "description": "Jadwal dokter berhasil dihapus"
                     },
                     "404": {
-                        "description": "Jadwal tidak ditemukan"
+                        "description": "Jadwal dokter tidak ditemukan"
                     }
                 }
             }
@@ -1715,11 +1754,11 @@
                 "tags": [
                     "Payment"
                 ],
-                "summary": "Menampilkan semua pembayaran",
+                "summary": "Menampilkan semua data pembayaran",
                 "operationId": "5f2ec8c665b1297d41921876457d7240",
                 "responses": {
                     "200": {
-                        "description": "Daftar pembayaran berhasil diambil"
+                        "description": "Berhasil mendapatkan data pembayaran"
                     }
                 }
             },
@@ -1727,46 +1766,71 @@
                 "tags": [
                     "Payment"
                 ],
-                "summary": "Menambahkan pembayaran baru",
+                "summary": "Menyimpan data pembayaran baru",
                 "operationId": "f7d830f2a2d1e5860fd8851213e6bacb",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "user_id",
-                                    "jumlah",
-                                    "metode",
-                                    "status"
-                                ],
-                                "properties": {
-                                    "user_id": {
-                                        "type": "integer",
-                                        "example": 1
-                                    },
-                                    "jumlah": {
-                                        "type": "number",
-                                        "format": "float",
-                                        "example": 50000
-                                    },
-                                    "metode": {
-                                        "type": "string",
-                                        "example": "Transfer Bank"
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "example": "Sukses"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "parameters": [
+                    {
+                        "name": "pendaftaran_id",
+                        "in": "query",
+                        "description": "ID pendaftaran",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "jumlah",
+                        "in": "query",
+                        "description": "Jumlah pembayaran",
+                        "required": true,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "metode",
+                        "in": "query",
+                        "description": "Metode pembayaran",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Tunai",
+                                "Kartu Kredit",
+                                "Transfer"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status pembayaran",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Pending",
+                                "Lunas",
+                                "Gagal"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "tanggal",
+                        "in": "query",
+                        "description": "Tanggal pembayaran (format: Y-m-d H:i:s)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-05-21T10:00:00"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
-                        "description": "Pembayaran berhasil ditambahkan"
+                        "description": "Data pembayaran berhasil disimpan"
                     }
                 }
             }
@@ -1776,13 +1840,12 @@
                 "tags": [
                     "Payment"
                 ],
-                "summary": "Menampilkan detail pembayaran",
+                "summary": "Menampilkan detail pembayaran berdasarkan ID",
                 "operationId": "347320cade5774c56d0a2c7d8bb5df9a",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID pembayaran",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -1791,7 +1854,7 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Data pembayaran berhasil diambil"
+                        "description": "Detail pembayaran ditemukan"
                     },
                     "404": {
                         "description": "Pembayaran tidak ditemukan"
@@ -1813,38 +1876,69 @@
                         "schema": {
                             "type": "integer"
                         }
-                    }
-                ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "jumlah": {
-                                        "type": "number",
-                                        "example": 75000
-                                    },
-                                    "metode": {
-                                        "type": "string",
-                                        "example": "E-Wallet"
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "example": "Sukses"
-                                    }
-                                },
-                                "type": "object"
-                            }
+                    },
+                    {
+                        "name": "pendaftaran_id",
+                        "in": "query",
+                        "description": "ID pendaftaran",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "jumlah",
+                        "in": "query",
+                        "description": "Jumlah pembayaran",
+                        "required": false,
+                        "schema": {
+                            "type": "number",
+                            "format": "float"
+                        }
+                    },
+                    {
+                        "name": "metode",
+                        "in": "query",
+                        "description": "Metode pembayaran",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Tunai",
+                                "Kartu Kredit",
+                                "Transfer"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status pembayaran",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Pending",
+                                "Lunas",
+                                "Gagal"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "tanggal",
+                        "in": "query",
+                        "description": "Tanggal pembayaran (format: Y-m-d H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-05-21T10:00:00"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "200": {
                         "description": "Data pembayaran berhasil diperbarui"
-                    },
-                    "404": {
-                        "description": "Pembayaran tidak ditemukan"
                     }
                 }
             },
@@ -1852,13 +1946,12 @@
                 "tags": [
                     "Payment"
                 ],
-                "summary": "Menghapus pembayaran",
+                "summary": "Menghapus data pembayaran",
                 "operationId": "ee598d511286273d9eb3694eed7437b4",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID pembayaran",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2065,64 +2158,70 @@
         "/api/pengambilan-obat": {
             "get": {
                 "tags": [
-                    "Pengambilan Obat"
+                    "PengambilanObat"
                 ],
                 "summary": "Menampilkan semua data pengambilan obat",
-                "operationId": "getAllPengambilanObat",
+                "operationId": "330b57a7ea8de49ad3849a47ee02937f",
                 "responses": {
                     "200": {
-                        "description": "Berhasil mendapatkan data"
+                        "description": "Berhasil mendapatkan data pengambilan obat"
                     }
                 }
             },
             "post": {
                 "tags": [
-                    "Pengambilan Obat"
+                    "PengambilanObat"
                 ],
-                "summary": "Menyimpan data pengambilan obat",
-                "operationId": "createPengambilanObat",
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "required": [
-                                    "pasien_id",
-                                    "inventory_id",
-                                    "jumlah",
-                                    "tanggal_ambil",
-                                    "status"
-                                ],
-                                "properties": {
-                                    "pasien_id": {
-                                        "type": "integer"
-                                    },
-                                    "inventory_id": {
-                                        "type": "integer"
-                                    },
-                                    "jumlah": {
-                                        "type": "integer"
-                                    },
-                                    "tanggal_ambil": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Diambil",
-                                            "Belum"
-                                        ]
-                                    }
-                                },
-                                "type": "object"
-                            }
+                "summary": "Menyimpan data pengambilan obat baru",
+                "operationId": "a2a5d1c92a8c3f5ebd67efca36a38a9a",
+                "parameters": [
+                    {
+                        "name": "resep_id",
+                        "in": "query",
+                        "description": "ID resep",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tanggal_pengambilan",
+                        "in": "query",
+                        "description": "Tanggal pengambilan (format: Y-m-d H:i:s)",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-05-21T10:00:00"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status pengambilan",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Menunggu",
+                                "Diambil",
+                                "Batal"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "petugas_apotek_id",
+                        "in": "query",
+                        "description": "ID petugas apotek",
+                        "required": true,
+                        "schema": {
+                            "type": "integer"
                         }
                     }
-                },
+                ],
                 "responses": {
                     "201": {
-                        "description": "Data berhasil disimpan"
+                        "description": "Data pengambilan obat berhasil disimpan"
                     }
                 }
             }
@@ -2130,15 +2229,14 @@
         "/api/pengambilan-obat/{id}": {
             "get": {
                 "tags": [
-                    "Pengambilan Obat"
+                    "PengambilanObat"
                 ],
-                "summary": "Menampilkan detail pengambilan obat",
-                "operationId": "getPengambilanObatById",
+                "summary": "Menampilkan detail pengambilan obat berdasarkan ID",
+                "operationId": "037df564f6630686c25ac4612c43668d",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID dari data pengambilan obat",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2147,82 +2245,89 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Data ditemukan"
+                        "description": "Detail pengambilan obat ditemukan"
                     },
                     "404": {
-                        "description": "Data tidak ditemukan"
+                        "description": "Pengambilan obat tidak ditemukan"
                     }
                 }
             },
             "put": {
                 "tags": [
-                    "Pengambilan Obat"
+                    "PengambilanObat"
                 ],
                 "summary": "Memperbarui data pengambilan obat",
-                "operationId": "updatePengambilanObat",
+                "operationId": "6b291c02432f887a23ae42ea11f8dc60",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID dari data yang ingin diperbarui",
+                        "description": "ID pengambilan obat",
                         "required": true,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "resep_id",
+                        "in": "query",
+                        "description": "ID resep",
+                        "required": false,
+                        "schema": {
+                            "type": "integer"
+                        }
+                    },
+                    {
+                        "name": "tanggal_pengambilan",
+                        "in": "query",
+                        "description": "Tanggal pengambilan (format: Y-m-d H:i:s)",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "format": "date-time",
+                            "example": "2025-05-21T10:00:00"
+                        }
+                    },
+                    {
+                        "name": "status",
+                        "in": "query",
+                        "description": "Status pengambilan",
+                        "required": false,
+                        "schema": {
+                            "type": "string",
+                            "enum": [
+                                "Menunggu",
+                                "Diambil",
+                                "Batal"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "petugas_apotek_id",
+                        "in": "query",
+                        "description": "ID petugas apotek",
+                        "required": false,
                         "schema": {
                             "type": "integer"
                         }
                     }
                 ],
-                "requestBody": {
-                    "required": true,
-                    "content": {
-                        "application/json": {
-                            "schema": {
-                                "properties": {
-                                    "pasien_id": {
-                                        "type": "integer"
-                                    },
-                                    "inventory_id": {
-                                        "type": "integer"
-                                    },
-                                    "jumlah": {
-                                        "type": "integer"
-                                    },
-                                    "tanggal_ambil": {
-                                        "type": "string",
-                                        "format": "date"
-                                    },
-                                    "status": {
-                                        "type": "string",
-                                        "enum": [
-                                            "Diambil",
-                                            "Belum"
-                                        ]
-                                    }
-                                },
-                                "type": "object"
-                            }
-                        }
-                    }
-                },
                 "responses": {
                     "200": {
-                        "description": "Data berhasil diperbarui"
-                    },
-                    "404": {
-                        "description": "Data tidak ditemukan"
+                        "description": "Data pengambilan obat berhasil diperbarui"
                     }
                 }
             },
             "delete": {
                 "tags": [
-                    "Pengambilan Obat"
+                    "PengambilanObat"
                 ],
                 "summary": "Menghapus data pengambilan obat",
-                "operationId": "deletePengambilanObat",
+                "operationId": "bf0bf80c4c7df94354daa4c2b24b34f4",
                 "parameters": [
                     {
                         "name": "id",
                         "in": "path",
-                        "description": "ID dari data yang ingin dihapus",
                         "required": true,
                         "schema": {
                             "type": "integer"
@@ -2231,10 +2336,10 @@
                 ],
                 "responses": {
                     "200": {
-                        "description": "Data berhasil dihapus"
+                        "description": "Pengambilan obat berhasil dihapus"
                     },
                     "404": {
-                        "description": "Data tidak ditemukan"
+                        "description": "Pengambilan obat tidak ditemukan"
                     }
                 }
             }
@@ -2814,8 +2919,8 @@
             "description": "Manajemen inventaris obat di rumah sakit"
         },
         {
-            "name": "Jadwal Dokter",
-            "description": "Manajemen data jadwal dokter"
+            "name": "JadwalDokter",
+            "description": "Manajemen jadwal dokter"
         },
         {
             "name": "Konsultasi",
@@ -2834,8 +2939,8 @@
             "description": "Manajemen data pendaftaran pasien"
         },
         {
-            "name": "Pengambilan Obat",
-            "description": "Manajemen data pengambilan obat oleh pasien"
+            "name": "PengambilanObat",
+            "description": "Manajemen data pengambilan obat"
         },
         {
             "name": "Poli",
