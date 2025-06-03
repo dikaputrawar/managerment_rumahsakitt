@@ -4,14 +4,12 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use Illuminate\Http\JsonResponse;
 use App\Models\PengambilanObat;
-use OpenApi\Annotations as OA;
 
 /**
  * @OA\Tag(
- *     name="Pengambilan Obat",
- *     description="Manajemen data pengambilan obat oleh pasien"
+ *     name="PengambilanObat",
+ *     description="Manajemen data pengambilan obat"
  * )
  */
 class PengambilanObatController extends Controller
@@ -19,185 +17,198 @@ class PengambilanObatController extends Controller
     /**
      * @OA\Get(
      *     path="/api/pengambilan-obat",
-     *     operationId="getAllPengambilanObat",
-     *     tags={"Pengambilan Obat"},
+     *     tags={"PengambilanObat"},
      *     summary="Menampilkan semua data pengambilan obat",
-     *     @OA\Response(response=200, description="Berhasil mendapatkan data")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Berhasil mendapatkan data pengambilan obat"
+     *     )
      * )
      */
-    public function index(): JsonResponse
+    public function index()
     {
-        $data = PengambilanObat::all();
-        return response()->json([
-            'success' => true,
-            'message' => 'Daftar pengambilan obat',
-            'data' => $data
-        ], 200);
+        return response()->json(PengambilanObat::all());
     }
 
     /**
      * @OA\Get(
      *     path="/api/pengambilan-obat/{id}",
-     *     operationId="getPengambilanObatById",
-     *     tags={"Pengambilan Obat"},
-     *     summary="Menampilkan detail pengambilan obat",
+     *     tags={"PengambilanObat"},
+     *     summary="Menampilkan detail pengambilan obat berdasarkan ID",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID dari data pengambilan obat",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="Data ditemukan"),
-     *     @OA\Response(response=404, description="Data tidak ditemukan")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Detail pengambilan obat ditemukan"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pengambilan obat tidak ditemukan"
+     *     )
      * )
      */
-    public function show(int $id): JsonResponse
+    public function show($id)
     {
         $data = PengambilanObat::find($id);
-
         if (!$data) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data pengambilan obat tidak ditemukan'
-            ], 404);
+            return response()->json(['message' => 'Pengambilan obat tidak ditemukan'], 404);
         }
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Detail pengambilan obat',
-            'data' => $data
-        ], 200);
+        return response()->json($data);
     }
 
     /**
      * @OA\Post(
      *     path="/api/pengambilan-obat",
-     *     operationId="createPengambilanObat",
-     *     tags={"Pengambilan Obat"},
-     *     summary="Menyimpan data pengambilan obat",
-     *     @OA\RequestBody(
+     *     tags={"PengambilanObat"},
+     *     summary="Menyimpan data pengambilan obat baru",
+     *     @OA\Parameter(
+     *         name="resep_id",
+     *         in="query",
      *         required=true,
-     *         @OA\JsonContent(
-     *             required={"pasien_id", "inventory_id", "jumlah", "tanggal_ambil", "status"},
-     *             @OA\Property(property="pasien_id", type="integer"),
-     *             @OA\Property(property="inventory_id", type="integer"),
-     *             @OA\Property(property="jumlah", type="integer"),
-     *             @OA\Property(property="tanggal_ambil", type="string", format="date"),
-     *             @OA\Property(property="status", type="string", enum={"Diambil", "Belum"})
-     *         )
+     *         description="ID resep",
+     *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=201, description="Data berhasil disimpan")
+     *     @OA\Parameter(
+     *         name="tanggal_pengambilan",
+     *         in="query",
+     *         required=true,
+     *         description="Tanggal pengambilan (format: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", format="date-time", example="2025-05-21T10:00:00")
+     *     ),
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         required=true,
+     *         description="Status pengambilan",
+     *         @OA\Schema(type="string", enum={"Menunggu", "Diambil", "Batal"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="petugas_apotek_id",
+     *         in="query",
+     *         required=true,
+     *         description="ID petugas apotek",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=201,
+     *         description="Data pengambilan obat berhasil disimpan"
+     *     )
      * )
      */
-    public function store(Request $request): JsonResponse
+    public function store(Request $request)
     {
         $data = $request->validate([
-            'pasien_id' => 'required|exists:pasien,id',
-            'inventory_id' => 'required|exists:inventory,id',
-            'jumlah' => 'required|integer|min:1',
-            'tanggal_ambil' => 'required|date',
-            'status' => 'required|in:Diambil,Belum',
+            'resep_id' => 'required|exists:reseps,id',
+            'tanggal_pengambilan' => 'required|date_format:Y-m-d\TH:i:s',
+            'status' => 'required|in:Menunggu,Diambil,Batal',
+            'petugas_apotek_id' => 'required|exists:petugas_apoteks,id',
         ]);
 
-        $obat = PengambilanObat::create($data);
+        $pengambilan = PengambilanObat::create($data);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Pengambilan obat berhasil disimpan',
-            'data' => $obat
-        ], 201);
+        return response()->json($pengambilan, 201);
     }
 
     /**
      * @OA\Put(
      *     path="/api/pengambilan-obat/{id}",
-     *     operationId="updatePengambilanObat",
-     *     tags={"Pengambilan Obat"},
+     *     tags={"PengambilanObat"},
      *     summary="Memperbarui data pengambilan obat",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID dari data yang ingin diperbarui",
+     *         description="ID pengambilan obat",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\RequestBody(
-     *         required=true,
-     *         @OA\JsonContent(
-     *             @OA\Property(property="pasien_id", type="integer"),
-     *             @OA\Property(property="inventory_id", type="integer"),
-     *             @OA\Property(property="jumlah", type="integer"),
-     *             @OA\Property(property="tanggal_ambil", type="string", format="date"),
-     *             @OA\Property(property="status", type="string", enum={"Diambil", "Belum"})
-     *         )
+     *     @OA\Parameter(
+     *         name="resep_id",
+     *         in="query",
+     *         required=false,
+     *         description="ID resep",
+     *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="Data berhasil diperbarui"),
-     *     @OA\Response(response=404, description="Data tidak ditemukan")
+     *     @OA\Parameter(
+     *         name="tanggal_pengambilan",
+     *         in="query",
+     *         required=false,
+     *         description="Tanggal pengambilan (format: Y-m-d H:i:s)",
+     *         @OA\Schema(type="string", format="date-time", example="2025-05-21T10:00:00")
+     *     ),
+     *     @OA\Parameter(
+     *         name="status",
+     *         in="query",
+     *         required=false,
+     *         description="Status pengambilan",
+     *         @OA\Schema(type="string", enum={"Menunggu", "Diambil", "Batal"})
+     *     ),
+     *     @OA\Parameter(
+     *         name="petugas_apotek_id",
+     *         in="query",
+     *         required=false,
+     *         description="ID petugas apotek",
+     *         @OA\Schema(type="integer")
+     *     ),
+     *     @OA\Response(
+     *         response=200,
+     *         description="Data pengambilan obat berhasil diperbarui"
+     *     )
      * )
      */
-    public function update(Request $request, int $id): JsonResponse
+    public function update(Request $request, $id)
     {
-        $obat = PengambilanObat::find($id);
-
-        if (!$obat) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data pengambilan obat tidak ditemukan'
-            ], 404);
+        $pengambilan = PengambilanObat::find($id);
+        if (!$pengambilan) {
+            return response()->json(['message' => 'Pengambilan obat tidak ditemukan'], 404);
         }
 
         $data = $request->validate([
-            'pasien_id' => 'sometimes|exists:pasien,id',
-            'inventory_id' => 'sometimes|exists:inventory,id',
-            'jumlah' => 'sometimes|integer|min:1',
-            'tanggal_ambil' => 'sometimes|date',
-            'status' => 'sometimes|in:Diambil,Belum',
+            'resep_id' => 'sometimes|exists:reseps,id',
+            'tanggal_pengambilan' => 'sometimes|date_format:Y-m-d\TH:i:s',
+            'status' => 'sometimes|in:Menunggu,Diambil,Batal',
+            'petugas_apotek_id' => 'sometimes|exists:petugas_apoteks,id',
         ]);
 
-        $obat->update($data);
+        $pengambilan->update($data);
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data pengambilan obat berhasil diperbarui',
-            'data' => $obat
-        ], 200);
+        return response()->json($pengambilan);
     }
 
     /**
      * @OA\Delete(
      *     path="/api/pengambilan-obat/{id}",
-     *     operationId="deletePengambilanObat",
-     *     tags={"Pengambilan Obat"},
+     *     tags={"PengambilanObat"},
      *     summary="Menghapus data pengambilan obat",
      *     @OA\Parameter(
      *         name="id",
      *         in="path",
      *         required=true,
-     *         description="ID dari data yang ingin dihapus",
      *         @OA\Schema(type="integer")
      *     ),
-     *     @OA\Response(response=200, description="Data berhasil dihapus"),
-     *     @OA\Response(response=404, description="Data tidak ditemukan")
+     *     @OA\Response(
+     *         response=200,
+     *         description="Pengambilan obat berhasil dihapus"
+     *     ),
+     *     @OA\Response(
+     *         response=404,
+     *         description="Pengambilan obat tidak ditemukan"
+     *     )
      * )
      */
-    public function destroy(int $id): JsonResponse
+    public function destroy($id)
     {
-        $obat = PengambilanObat::find($id);
-
-        if (!$obat) {
-            return response()->json([
-                'success' => false,
-                'message' => 'Data pengambilan obat tidak ditemukan'
-            ], 404);
+        $pengambilan = PengambilanObat::find($id);
+        if (!$pengambilan) {
+            return response()->json(['message' => 'Pengambilan obat tidak ditemukan'], 404);
         }
 
-        $obat->delete();
+        $pengambilan->delete();
 
-        return response()->json([
-            'success' => true,
-            'message' => 'Data pengambilan obat berhasil dihapus',
-            'deleted_id' => $id
-        ], 200);
+        return response()->json(['message' => 'Pengambilan obat berhasil dihapus']);
     }
 }
