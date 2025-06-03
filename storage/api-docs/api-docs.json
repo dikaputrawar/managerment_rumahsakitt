@@ -7,7 +7,7 @@
     },
     "servers": [
         {
-            "url": "http://my-default-host.com",
+            "url": "http://127.0.0.1:8000",
             "description": "Server API Lokal"
         },
         {
@@ -283,6 +283,173 @@
                         "description": "Antrean tidak ditemukan"
                     }
                 }
+            }
+        },
+        "/api/register": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Register user",
+                "description": "Register user baru dengan email, nama, dan password.",
+                "operationId": "8e4e3cb7b46126f4696379d3c7eeb4ad",
+                "requestBody": {
+                    "required": true,
+                    "content": {
+                        "application/json": {
+                            "schema": {
+                                "required": [
+                                    "name",
+                                    "email",
+                                    "password"
+                                ],
+                                "properties": {
+                                    "name": {
+                                        "type": "string",
+                                        "example": "Administrator"
+                                    },
+                                    "email": {
+                                        "type": "string",
+                                        "format": "email",
+                                        "example": "admin@example.com"
+                                    },
+                                    "password": {
+                                        "type": "string",
+                                        "format": "password",
+                                        "example": "password123"
+                                    }
+                                },
+                                "type": "object"
+                            }
+                        }
+                    }
+                },
+                "responses": {
+                    "201": {
+                        "description": "Register berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Register berhasil"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abcde12345"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "422": {
+                        "description": "Validasi gagal"
+                    }
+                }
+            }
+        },
+        "/api/login": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Login user",
+                "description": "Login menggunakan email dan password via parameter, dan mendapatkan Bearer Token",
+                "operationId": "222b2625838e3c57e017987f73598fda",
+                "parameters": [
+                    {
+                        "name": "email",
+                        "in": "query",
+                        "description": "Email user",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "email",
+                            "example": "admin@example.com"
+                        }
+                    },
+                    {
+                        "name": "password",
+                        "in": "query",
+                        "description": "Password user",
+                        "required": true,
+                        "schema": {
+                            "type": "string",
+                            "format": "password",
+                            "example": "password"
+                        }
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "Login berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Login berhasil"
+                                        },
+                                        "token": {
+                                            "type": "string",
+                                            "example": "1|abcde12345"
+                                        },
+                                        "user": {
+                                            "type": "object"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Email atau password salah"
+                    }
+                }
+            }
+        },
+        "/api/logout": {
+            "post": {
+                "tags": [
+                    "Authentication"
+                ],
+                "summary": "Logout user",
+                "description": "Menghapus token autentikasi untuk logout user yang sedang login.",
+                "operationId": "ad65cbbd4e9f201619eae184a5961a98",
+                "responses": {
+                    "200": {
+                        "description": "Logout berhasil",
+                        "content": {
+                            "application/json": {
+                                "schema": {
+                                    "properties": {
+                                        "message": {
+                                            "type": "string",
+                                            "example": "Logout berhasil"
+                                        }
+                                    },
+                                    "type": "object"
+                                }
+                            }
+                        }
+                    },
+                    "401": {
+                        "description": "Unauthenticated"
+                    }
+                },
+                "security": [
+                    {
+                        "bearerAuth": []
+                    }
+                ]
             }
         },
         "/api/dokter": {
@@ -2850,12 +3017,31 @@
             "description": "Antrean"
         },
         {
+            "name": "Authentication",
+            "description": "Authentication"
+        },
+        {
             "name": "Pasien",
             "description": "Pasien"
         },
         {
             "name": "Rekam Medis",
             "description": "Rekam Medis"
+        }
+    ],
+    "components": {
+        "securitySchemes": {
+            "sanctum": {
+                "type": "apiKey",
+                "description": "Masukkan token dalam format: Bearer {token}",
+                "name": "Authorization",
+                "in": "header"
+            }
+        }
+    },
+    "security": [
+        {
+            "sanctum": []
         }
     ]
 }
